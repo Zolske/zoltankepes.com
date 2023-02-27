@@ -46,3 +46,5 @@ vercel
 ```
 
 2. go to the vercel [website](https://vercel.com/zolske/zoltankepes-com/deployments) and click on the last version's settings (_3 dots_) and choose the action "Promote to Production"
+
+3. after the initial setup the project is deployed with every push to GitHub
