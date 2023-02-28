@@ -9,11 +9,11 @@ Because orange is to me a warm and energetic color.
 
 ![refactoring ui sample site mockup palette 21](../../images/doc_images/design_system/color_palette_21/palette_21_example_site_refactoringui.png)
 
-- the header and may be some other elements will get some more orange
+- (_the header and may be some other elements will get some more orange_)
 
-### Primary Colors, Orange (Vivid)
+### Primary Colors, Orange Vivid
 
-These are the splashes of color that should appear the most in my UI,
+These are the **splashes** of color that should appear the most in my UI,
 and are the ones that determine the overall "look" of the site. I use those
 for things like **primary actions**, **links**, **navigation items**, **icons**, **accent
 borders**, or **text I want to emphasize**.
@@ -30,7 +30,11 @@ borders**, or **text I want to emphasize**.
 | #841003                                                                                  | #AD1D07                                                                                  | #C52707                                                                                  | #DE3A11                                                                                  | #F35627                                                                                  |
 | hsl(6, 96%, 26%)                                                                         | hsl(8, 92%, 35%)                                                                         | hsl(10, 93%, 40%)                                                                        | hsl(12, 86%, 47%)                                                                        | hsl(14, 89%, 55%)                                                                        |
 
-## Neutral Colors
+### Neutral Colors, Cool Grey
+
+These are the colors which I am using the most and will make up the **majority**
+of my UI. I use them for most of my **text**, **backgrounds**, and **borders**,
+as well as for things like **secondary buttons** and **links**.
 
 | ![#1F2933](../../images/doc_images/design_system/color_palette_21/neutral/%231F2933.jpg) | ![#323F4B](../../images/doc_images/design_system/color_palette_21/neutral/%23323F4B.jpg) | ![#3E4C59](../../images/doc_images/design_system/color_palette_21/neutral/%233E4C59.jpg) | ![#52606D](../../images/doc_images/design_system/color_palette_21/neutral/%2352606D.jpg) | ![#616E7C](../../images/doc_images/design_system/color_palette_21/neutral/%23616E7C.jpg) |
 | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
