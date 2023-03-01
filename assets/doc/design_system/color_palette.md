@@ -121,3 +121,9 @@ or **positive trends** with the appropriate semantic color.
 |      hex color | #57AE5B                                                                                           | #7BC47F                                                                                           | #A3D9A5                                                                                           | #C1EAC5                                                                                           | #E3F9E5                                                                                           |
 |      hsl color | hsl(123, 35%, 51%)                                                                                | hsl(123, 38%, 63%)                                                                                | hsl(122, 42%, 75%)                                                                                | hsl(126, 49%, 84%)                                                                                | hsl(125, 65%, 93%)                                                                                |
 | tailwind class | green-500                                                                                         | green-400                                                                                         | green-300                                                                                         | green-200                                                                                         | green-100                                                                                         |
+
+## tailwind.config
+
+The colors are set in the tailwind.config.js file and can be used any where in the project with the corresponding tailwind class name.
+
+link to [tailwind.config.js](../../../tailwind.config.js)
