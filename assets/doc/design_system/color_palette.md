@@ -1,3 +1,5 @@
+[&#X21e7; back to the "README" &#X21e7;](../../../README.md)
+
 # Color Palette
 
 I have chosen to use the "color palette 21" from the book's (_[Refactoring UI](https://www.refactoringui.com/?ref=sidebar)_) additional material.  
@@ -5,13 +7,32 @@ Because orange is to me a warm and energetic color.
 
 ---
 
+## table of contents
+
+- ["color palette 21"](#color-palette-21)
+- ["Primary Colors, Orange Vivid"](#primary-colors-orange-vivid)
+- ["Neutral Colors, Cool Grey"](#neutral-colors-cool-grey)
+- ["Supporting Colors"](#supporting-colors)
+  - ["indigo"](#indigo)
+  - ["red"](#red)
+  - ["yellow"](#yellow)
+  - ["green"](#green)
+- ["logo colors"](#logo-colors)
+- ["tailwind.config"](#tailwindconfig)
+
+---
+
 ## "color palette 21"
+
+[&#X21e7; back to the "table of contents" &#X21e7;](#table-of-contents)
 
 ![refactoring ui sample site mockup palette 21](../../images/doc_images/design_system/color_palette_21/palette_21_example_site_refactoringui.png)
 
 - (_the header and may be some other elements will get some more orange_)
 
 ### Primary Colors, Orange Vivid
+
+[&#X21e7; back to the "table of contents" &#X21e7;](#table-of-contents)
 
 These are the **splashes** of color that should appear the most in my UI,
 and are the ones that determine the overall "look" of the site. I use those
@@ -34,6 +55,8 @@ borders**, or **text I want to emphasize**.
 
 ### Neutral Colors, Cool Grey
 
+[&#X21e7; back to the "table of contents" &#X21e7;](#table-of-contents)
+
 These are the colors which I am using the most and will make up the **majority** of my UI.
 I use them for most of my **text**, **backgrounds**, and **borders**,
 as well as for things like **secondary buttons** and **links**.
@@ -54,11 +77,15 @@ as well as for things like **secondary buttons** and **links**.
 
 ### Supporting Colors
 
+[&#X21e7; back to the "table of contents" &#X21e7;](#table-of-contents)
+
 These colors are used fairly conservatively throughout my UI to avoid overpowering my primary colors.
 I use them when I need **an element to stand out**, or **to reinforce things like error states**
 or **positive trends** with the appropriate semantic color.
 
 #### Indigo
+
+[&#X21e7; back to the "table of contents" &#X21e7;](#table-of-contents)
 
 |          color | ![#19216C](../../images/doc_images/design_system/color_palette_21/supporting/indigo/%2319216C.jpg) | ![#2D3A8C](../../images/doc_images/design_system/color_palette_21/supporting/indigo/%232D3A8C.jpg) | ![#35469C](../../images/doc_images/design_system/color_palette_21/supporting/indigo/%2335469C.jpg) | ![#4055A8](../../images/doc_images/design_system/color_palette_21/supporting/indigo/%234055A8.jpg) | ![#4C63B6](../../images/doc_images/design_system/color_palette_21/supporting/indigo/%234C63B6.jpg) |
 | -------------: | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
@@ -76,6 +103,8 @@ or **positive trends** with the appropriate semantic color.
 
 #### Red
 
+[&#X21e7; back to the "table of contents" &#X21e7;](#table-of-contents)
+
 |          color | ![#610404](../../images/doc_images/design_system/color_palette_21/supporting/red/%23610404.jpg) | ![#780A0A](../../images/doc_images/design_system/color_palette_21/supporting/red/%23780A0A.jpg) | ![#911111](../../images/doc_images/design_system/color_palette_21/supporting/red/%23911111.jpg) | ![#A61B1B](../../images/doc_images/design_system/color_palette_21/supporting/red/%23A61B1B.jpg) | ![#BA2525](../../images/doc_images/design_system/color_palette_21/supporting/red/%23BA2525.jpg) |
 | -------------: | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
 |            ### | ################                                                                                | ################                                                                                | ################                                                                                | ################                                                                                | ################                                                                                |
@@ -91,6 +120,8 @@ or **positive trends** with the appropriate semantic color.
 | tailwind class | red-500                                                                                         | red-400                                                                                         | red-300                                                                                         | red-200                                                                                         | red-100                                                                                         |
 
 #### Yellow
+
+[&#X21e7; back to the "table of contents" &#X21e7;](#table-of-contents)
 
 |          color | ![#513C06](../../images/doc_images/design_system/color_palette_21/supporting/yellow/%23513C06.jpg) | ![#7C5E10](../../images/doc_images/design_system/color_palette_21/supporting/yellow/%237C5E10.jpg) | ![#A27C1A](../../images/doc_images/design_system/color_palette_21/supporting/yellow/%23A27C1A.jpg) | ![#C99A2E](../../images/doc_images/design_system/color_palette_21/supporting/yellow/%23C99A2E.jpg) | ![#E9B949](../../images/doc_images/design_system/color_palette_21/supporting/yellow/%23E9B949.jpg) |
 | -------------: | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
@@ -108,6 +139,8 @@ or **positive trends** with the appropriate semantic color.
 
 #### Green
 
+[&#X21e7; back to the "table of contents" &#X21e7;](#table-of-contents)
+
 |          color | ![#05400A](../../images/doc_images/design_system/color_palette_21/supporting/green/%2305400A.jpg) | ![#0E5814](../../images/doc_images/design_system/color_palette_21/supporting/green/%230E5814.jpg) | ![#207227](../../images/doc_images/design_system/color_palette_21/supporting/green/%23207227.jpg) | ![#2F8132](../../images/doc_images/design_system/color_palette_21/supporting/green/%232F8132.jpg) | ![#3F9142](../../images/doc_images/design_system/color_palette_21/supporting/green/%233F9142.jpg) |
 | -------------: | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
 |            ### | ################                                                                                  | ################                                                                                  | ################                                                                                  | ################                                                                                  | ################                                                                                  |
@@ -122,7 +155,24 @@ or **positive trends** with the appropriate semantic color.
 |      hsl color | hsl(123, 35%, 51%)                                                                                | hsl(123, 38%, 63%)                                                                                | hsl(122, 42%, 75%)                                                                                | hsl(126, 49%, 84%)                                                                                | hsl(125, 65%, 93%)                                                                                |
 | tailwind class | green-500                                                                                         | green-400                                                                                         | green-300                                                                                         | green-200                                                                                         | green-100                                                                                         |
 
+## logo colors
+
+[&#X21e7; back to the "table of contents" &#X21e7;](#table-of-contents)
+
+The colors which are used for the logo of the website.  
+![logo](../../images/logo/zoltankepes_laptop_logo_title.png)
+| color | ![#0000ff](../../images/doc_images/design_system/color_palette_21/logo/%230000ff.jpg) |![#ff0000](../../images/doc_images/design_system/color_palette_21/logo/%23ff0000.jpg) |
+| -------------: | ----| ----|
+| ### | ################ | ################ |
+| hex color |#0000ff|#ff0000|
+| hsl color |hsl(240,100%,50%)|hsl(0,100%,50%)|
+| tailwind class |logo-blue|logo-red|
+
+### logo
+
 ## tailwind.config
+
+[&#X21e7; back to the "table of contents" &#X21e7;](#table-of-contents)
 
 The colors are set in the tailwind.config.js file and can be used any where in the project with the corresponding tailwind class name.
 

@@ -8,8 +8,12 @@ module.exports = {
     // Or if using `src` directory:
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
+  darkMode: "class",
   theme: {
     extend: {},
+    fontFamily: {
+      audiowide: ["Audiowide", "cursive"],
+    },
     colors: {
       transparent: "transparent",
       current: "currentColor",
@@ -84,6 +88,10 @@ module.exports = {
         300: "#A3D9A5",
         200: "#C1EAC5",
         100: "#E3F9E5",
+      },
+      logo: {
+        red: "#ff0000",
+        blue: "#0000ff",
       },
     },
   },
