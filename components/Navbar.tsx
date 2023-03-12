@@ -2,6 +2,10 @@ import Image from "next/image";
 // import logo_title from "../assets/images/logo/zoltankepes_laptop_logo.png";
 import logo_title from "../assets/images/logo/zoltankepes_laptop_logo.svg";
 import { useState } from "react";
+import SignInSignUp from "./SignInSignUp";
+import ToggleButton from "./ToggleButton";
+import Button from "./Button";
+import ButtonToggle from "./ButtonToggle";
 
 export default function Navbar() {
   const [mode, setMode] = useState("dark");
@@ -56,7 +60,7 @@ export default function Navbar() {
             ></div>
           </div>
         </div>
-        <header className="flex items-center bg-indigo-100 h-12 mt-0 rounded-b-3xl shadow-md pl-1 pr-1">
+        <header className="flex items-center bg-primary-200 h-12 mt-0 rounded-b-3xl shadow-md pl-1 pr-1">
           {/* laptop icon */}
           <Image
             src={logo_title}
@@ -147,6 +151,16 @@ export default function Navbar() {
             Pages
           </h2>
         </div>
+        <SignInSignUp openModale={false} />
+      </div>
+      <div>
+        <Button tip={"hello"} size={"base"} title={"login"} type={1} />
+        <Button tip={"hello"} size={"base"} title={"login"} type={2} />
+        <Button tip={"hello"} size={"base"} title={"login"} type={3} />
+        {/* <hr></hr> */}
+        <ButtonToggle tip={"hello"} type={1} size={"base"} />
+        <ButtonToggle tip={"hello"} type={2} size={"base"} />
+        <ButtonToggle tip={"hello"} type={3} size={"base"} />
       </div>
     </>
   );
