@@ -154,13 +154,25 @@ export default function Navbar() {
         <SignInSignUp openModale={false} />
       </div>
       <div>
-        <Button tip={"hello"} size={"base"} title={"login"} type={1} />
-        <Button tip={"hello"} size={"base"} title={"login"} type={2} />
-        <Button tip={"hello"} size={"base"} title={"login"} type={3} />
+        <Button tip={"hello"} size={"base"} title={"login"} style={1} />
+        <Button
+          tip={"hello"}
+          size={"base"}
+          title={"login"}
+          style={2}
+          type={"submit"}
+        />
+        <Button
+          tip={"hello"}
+          size={"base"}
+          title={"login"}
+          style={3}
+          type={"submit"}
+        />
         {/* <hr></hr> */}
-        <ButtonToggle tip={"hello"} type={1} size={"base"} />
-        <ButtonToggle tip={"hello"} type={2} size={"base"} />
-        <ButtonToggle tip={"hello"} type={3} size={"base"} />
+        <ButtonToggle tip={"hello"} style={1} size={"base"} disable={false} />
+        <ButtonToggle tip={"hello"} style={2} size={"base"} />
+        <ButtonToggle tip={"hello"} style={3} size={"base"} />
       </div>
     </>
   );

@@ -2,10 +2,12 @@ export default function Button({
   tip = "",
   size = "sm",
   title = "click me",
-  type = 3,
+  style = 3,
+  type = "button",
+  aria = "",
 }) {
   let buttonStyle = "";
-  switch (type) {
+  switch (style) {
     case 1:
       buttonStyle =
         "border border-primary-500 border-2 bg-primary-500 text-[#FFFFFF] font-black hover:bg-primary-600 hover:border-primary-500";
@@ -21,12 +23,35 @@ export default function Button({
   }
   return (
     <>
-      <button
-        className={` rounded-md pl-2 pr-2 pt-1 pb-1  shadow-xl m-2 text-${size} ${buttonStyle}`}
-        title={tip}
-      >
-        {title}
-      </button>
+      {type === "button" && (
+        <button
+          className={` rounded-md pl-2 pr-2 pt-1 pb-1  shadow-xl m-2 text-${size} ${buttonStyle}`}
+          title={tip}
+          aria-label={aria}
+        >
+          {title}
+        </button>
+      )}
+      {type === "submit" && (
+        <button
+          className={` rounded-md pl-2 pr-2 pt-1 pb-1  shadow-xl m-2 text-${size} ${buttonStyle}`}
+          title={tip}
+          aria-label={aria}
+          type="submit"
+        >
+          {title}
+        </button>
+      )}
+      {type === "reset" && (
+        <button
+          className={` rounded-md pl-2 pr-2 pt-1 pb-1  shadow-xl m-2 text-${size} ${buttonStyle}`}
+          title={tip}
+          aria-label={aria}
+          type="reset"
+        >
+          {title}
+        </button>
+      )}
     </>
   );
 }
