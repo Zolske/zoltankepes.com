@@ -36,7 +36,7 @@
 
 ### aria label
 
-- the default tool aria label is **empty** unless the button is `disable={true}` then it is **always** `"Button is disabled."`
+- the default aria label is **empty** unless the button is `disable={true}` then it is **always** `"Button is disabled."`
 - overwrite the default with the `aria` prop (_e.g. `<Button aria={"Hello from tool tip."} />`_)
 
 ---
@@ -56,6 +56,33 @@ There are 3 types ...
 1. the **default button** type where the button works as a normal button, which is the default (`type={"button"}`)
 2. the **submit button** is used to submit a forms (`type={"submit"}`)
 3. the **reset button** is used to reset a forms (`type={"reset"}`)
+
+---
+
+### passing icons
+
+- icons can be passed through the `iconLeft` (_left_) and the `iconRight` (_right_) prop
+- the icon can be saved in an variable or passed directly
+
+```jsx
+import { FaBeer } from "react-icons/fa";
+import { IconContext } from "react-icons";
+// ....
+  const iconTest = (
+    <IconContext.Provider
+      value={{ className: "fill-primary-500 text-xl inline" }}
+    >
+      <FaBeer />
+    </IconContext.Provider>
+  );
+
+  return (
+    <>
+          <Button iconLeft={iconTest} />
+    </>
+  );
+}
+```
 
 ---
 

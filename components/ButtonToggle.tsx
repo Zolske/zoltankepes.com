@@ -61,21 +61,21 @@ export default function ButtonToggle({
   switch (style) {
     case 1:
       buttonStyle =
-        "border-2 border-primary-500 bg-primary-500 hover:bg-primary-600 group shadow-xl";
+        "border-2 border-primary-500 bg-primary-500 sm:hover:bg-primary-600 group shadow-md";
       ballStyle =
-        "bg-[#FFFFFF] group-hover:bg-primary-100 text-[#FFFFFF] group-hover:text-primary-100";
+        "bg-[#FFFFFF] sm:group-hover:bg-primary-100 text-[#FFFFFF] sm:group-hover:text-primary-100";
       break;
     case 2:
       buttonStyle =
-        "border-2 border-primary-300 bg-primary-300 hover:bg-primary-600 group shadow-xl";
+        "border-2 border-primary-300 bg-primary-300 sm:hover:bg-primary-600 group shadow-md";
       ballStyle =
-        "bg-[#FFFFFF] group-hover:bg-primary-100 text-[#FFFFFF] group-hover:text-primary-100";
+        "bg-[#FFFFFF] sm:group-hover:bg-primary-100 text-[#FFFFFF] sm:group-hover:text-primary-100";
       break;
     case 3:
       buttonStyle =
-        "border-2 border-primary-400  hover:bg-primary-600 group shadow-xl";
+        "border-2 border-primary-400  sm:hover:bg-primary-600 group shadow-md";
       ballStyle =
-        "bg-primary-400 group-hover:bg-primary-100 text-primary-400 group-hover:text-primary-100";
+        "bg-primary-400 sm:group-hover:bg-primary-100 text-primary-400 sm:group-hover:text-primary-100";
       break;
   }
   // <<< end <<< button style, depending on the "style" Prop
@@ -83,7 +83,7 @@ export default function ButtonToggle({
   const buttonOffStyle =
     "border-2 border-neutral-300 bg-neutral-200 group shadow-none border-dashed";
   const buttonOffBallStyle =
-    "bg-[#FFFFFF] group-hover:bg-primary-100 text-[#FFFFFF] group-hover:text-primary-100 ";
+    "bg-[#FFFFFF] sm:group-hover:bg-primary-100 text-[#FFFFFF] sm:group-hover:text-primary-100 ";
   const buttonDisabled =
     "border-2 border-neutral-300 bg-neutral-200 opacity-60 cursor-default shadow-none border-dotted";
   const buttonBallDisabled =

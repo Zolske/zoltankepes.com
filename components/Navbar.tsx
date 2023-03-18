@@ -6,6 +6,8 @@ import SignInSignUp from "./SignInSignUp";
 import ToggleButton from "./ToggleButton";
 import Button from "./Button";
 import ButtonToggle from "./ButtonToggle";
+import { FaBeer } from "react-icons/fa";
+import { IconContext } from "react-icons";
 
 export default function Navbar() {
   const [mode, setMode] = useState("dark");
@@ -47,6 +49,14 @@ export default function Navbar() {
     console.log("parent click");
   };
 
+  const iconTest = (
+    <IconContext.Provider
+      value={{ className: "fill-primary-500 text-xl inline" }}
+    >
+      <FaBeer />
+    </IconContext.Provider>
+  );
+
   return (
     <>
       <div className="flex justify-between items-center">
@@ -86,22 +96,7 @@ export default function Navbar() {
           </h1>
         </header>
         {/* login or sign up button*/}
-        <div className="cursor-pointer bg-primary-200 h-10 pl-4 rounded-l-full mt-0.5 flex items-center shadow-md text-primary-1000 dark:text-indigo-100 dark:bg-primary-1000">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="w-8 h-8 mr-1 hover:fill-primary-500 "
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"
-            />
-          </svg>
-        </div>
+        <SignInSignUp />
       </div>
       {/* sidepanel triggered through hamburger menu */}
       <div
@@ -161,43 +156,9 @@ export default function Navbar() {
             Pages
           </h2>
         </div>
-        <SignInSignUp openModale={false} />
       </div>
-      <div className="bg-[#fff] h-fit">
-        <div className="border-2 border-neutral-400 w-fit">
-          <Button style={1} />
-        </div>
-        <div className="border-2 border-neutral-400 w-fit">
-          <Button tip={"medium"} size={"base"} title={"medium"} style={2} />
-        </div>
-        <div className="border-2 border-neutral-400 w-fit">
-          <Button tip={"low"} size={"xl"} title={"low"} style={3} />
-        </div>
-        <div className="border-2 border-neutral-400 w-fit">
-          <Button callBack={handleParent} />
-        </div>
-        <hr></hr>
-        <ButtonToggle
-          style={1}
-          switchRight={true}
-          onOff={false}
-          tipLeft={"switched to the left"}
-          tipRight={"switched to the right"}
-          ariaRight={"hello right"}
-        />
 
-        <div className="border-2 border-neutral-400 w-fit">
-          <ButtonToggle style={2} size={"base"} onOff={false} />
-          <ButtonToggle style={2} size={"base"} onOff={false} />
-        </div>
-        <div className="border-2 border-neutral-400 w-fit">
-          <ButtonToggle style={3} size={"base"} onOff={false} />
-          <ButtonToggle style={3} size={"base"} onOff={false} />
-        </div>
-        <div className="border-2 border-neutral-400 w-fit">
-          <ButtonToggle style={1} size={"sm"} onOff={false} disable={true} />
-        </div>
-      </div>
+      <Button style={6} />
     </>
   );
 }
