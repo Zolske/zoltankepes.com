@@ -37,6 +37,16 @@ export default function Navbar() {
     // sidepanel?.classList.toggle("origin-left");
   }
 
+  // const handleChild = (callback) => {
+  //   // Here, you have the function from the child.
+  //   console.log("Hello Zolsk");
+  //   callback();
+  // };
+
+  const handleParent = () => {
+    console.log("parent click");
+  };
+
   return (
     <>
       <div className="flex justify-between items-center">
@@ -153,26 +163,40 @@ export default function Navbar() {
         </div>
         <SignInSignUp openModale={false} />
       </div>
-      <div>
-        <Button tip={"hello"} size={"base"} title={"login"} style={1} />
-        <Button
-          tip={"hello"}
-          size={"base"}
-          title={"login"}
-          style={2}
-          type={"submit"}
+      <div className="bg-[#fff] h-fit">
+        <div className="border-2 border-neutral-400 w-fit">
+          <Button style={1} />
+        </div>
+        <div className="border-2 border-neutral-400 w-fit">
+          <Button tip={"medium"} size={"base"} title={"medium"} style={2} />
+        </div>
+        <div className="border-2 border-neutral-400 w-fit">
+          <Button tip={"low"} size={"xl"} title={"low"} style={3} />
+        </div>
+        <div className="border-2 border-neutral-400 w-fit">
+          <Button callBack={handleParent} />
+        </div>
+        <hr></hr>
+        <ButtonToggle
+          style={1}
+          switchRight={true}
+          onOff={false}
+          tipLeft={"switched to the left"}
+          tipRight={"switched to the right"}
+          ariaRight={"hello right"}
         />
-        <Button
-          tip={"hello"}
-          size={"base"}
-          title={"login"}
-          style={3}
-          type={"submit"}
-        />
-        {/* <hr></hr> */}
-        <ButtonToggle tip={"hello"} style={1} size={"base"} disable={false} />
-        <ButtonToggle tip={"hello"} style={2} size={"base"} />
-        <ButtonToggle tip={"hello"} style={3} size={"base"} />
+
+        <div className="border-2 border-neutral-400 w-fit">
+          <ButtonToggle style={2} size={"base"} onOff={false} />
+          <ButtonToggle style={2} size={"base"} onOff={false} />
+        </div>
+        <div className="border-2 border-neutral-400 w-fit">
+          <ButtonToggle style={3} size={"base"} onOff={false} />
+          <ButtonToggle style={3} size={"base"} onOff={false} />
+        </div>
+        <div className="border-2 border-neutral-400 w-fit">
+          <ButtonToggle style={1} size={"sm"} onOff={false} disable={true} />
+        </div>
       </div>
     </>
   );
