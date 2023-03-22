@@ -6,7 +6,7 @@ import SignInSignUp from "./SignInSignUp";
 import ToggleButton from "./ToggleButton";
 import Button from "./Button";
 import ButtonToggle from "./ButtonToggle";
-import { FaBeer } from "react-icons/fa";
+import { SlLogin } from "react-icons/sl";
 import { IconContext } from "react-icons";
 
 export default function Navbar() {
@@ -21,6 +21,7 @@ export default function Navbar() {
     darkMode?.classList.toggle("hidden");
     html.classList.toggle("dark");
     setMode(mode === "dark" ? "light" : "dark");
+    console.log("hello from handleClickMode");
   }
 
   function handleClickMenu() {
@@ -53,7 +54,7 @@ export default function Navbar() {
     <IconContext.Provider
       value={{ className: "fill-primary-500 text-xl inline" }}
     >
-      <FaBeer />
+      <SlLogin />
     </IconContext.Provider>
   );
 
@@ -68,15 +69,15 @@ export default function Navbar() {
           <div>
             <div
               id="bar_1"
-              className="w-8 h-0.5 bg-primary-1000 dark:bg-indigo-100 mt-1 mb-1 ml-1 transition duration-300 ease-in-out group-hover:bg-primary-500"
+              className="w-8 h-0.5 bg-primary-1000 dark:bg-indigo-100 mt-1 mb-1 ml-2 transition duration-300 ease-in-out group-hover:bg-primary-500"
             ></div>
             <div
               id="bar_2"
-              className="w-8 h-0.5 bg-primary-1000 dark:bg-indigo-100 mb-1 ml-1 transition duration-300 ease-in-out group-hover:bg-primary-500"
+              className="w-8 h-0.5 bg-primary-1000 dark:bg-indigo-100 mb-1 ml-2 transition duration-300 ease-in-out group-hover:bg-primary-500"
             ></div>
             <div
               id="bar_3"
-              className="w-8 h-0.5 bg-primary-1000 dark:bg-indigo-100 mt-1 mb-1 ml-1 transition duration-300 ease-in-out group-hover:bg-primary-500"
+              className="w-8 h-0.5 bg-primary-1000 dark:bg-indigo-100 mt-1 mb-1 ml-2 transition duration-300 ease-in-out group-hover:bg-primary-500"
             ></div>
           </div>
         </div>
@@ -109,7 +110,10 @@ export default function Navbar() {
           </h2>
         </div>
         {/* dark / light mode button */}
-        <div className="ml-2 w-fit bg-indigo-100 h-8 rounded-full mb-2 mt-1 flex">
+        <div
+          className="ml-2 w-fit bg-indigo-100 h-8 rounded-full mb-2 mt-1 flex"
+          onClick={handleClickMode}
+        >
           <div className="cursor-pointer w-fit pl-3 pr-3 bg-primary-200 h-8 rounded-full flex items-center shadow-md text-primary-1000 dark:text-indigo-100 dark:bg-primary-1000">
             {/* dark mode button */}
             <svg
@@ -120,7 +124,6 @@ export default function Navbar() {
               stroke="currentColor"
               id="darkMode"
               className="w-6 h-6 text-primary-1000 hover:fill-primary-1000"
-              onClick={handleClickMode}
             >
               <path
                 strokeLinecap="round"
@@ -137,7 +140,6 @@ export default function Navbar() {
               stroke="currentColor"
               id="lightMode"
               className="w-6 h-6 text-indigo-100  hidden hover:fill-indigo-100"
-              onClick={handleClickMode}
             >
               <path
                 strokeLinecap="round"
@@ -157,8 +159,6 @@ export default function Navbar() {
           </h2>
         </div>
       </div>
-
-      <Button style={6} />
     </>
   );
 }

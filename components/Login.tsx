@@ -131,7 +131,7 @@ export default function Login() {
         <div className="btn mt-4">
           <div className="flex justify-center">
             <Button
-              title={" login with email"}
+              title={" login with email & password"}
               type={"submit"}
               aria={"login with email and password"}
               tip={"login with email and password"}

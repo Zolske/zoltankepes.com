@@ -4,10 +4,15 @@ import Login from "./Login";
 import Signup from "./Signup";
 import ButtonToggle from "./ButtonToggle";
 import Button from "./Button";
+import { IconContext } from "react-icons";
+import { SlLogin } from "react-icons/sl";
+import { SlLogout } from "react-icons/sl";
+import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 
 export default function SignInSignUp() {
-  let [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const [signIn, setSignIn] = useState(true);
+  const [userIn, SetUserIn] = useState(false);
 
   function closeModal() {
     setIsOpen(false);
@@ -21,31 +26,71 @@ export default function SignInSignUp() {
     setSignIn(signIn ? false : true);
   }
 
+  const auth = getAuth();
+
+  function logout() {
+    signOut(auth)
+      .then(() => {
+        // Sign-out successful.
+      })
+      .catch((error) => {
+        // An error happened.
+      });
+  }
+
+  onAuthStateChanged(auth, (user) => {
+    if (user && !userIn) {
+      // User is signed in
+      SetUserIn(true);
+      closeModal();
+    } else if (!user && userIn) {
+      // User is signed out
+      SetUserIn(false);
+    }
+  });
+
   return (
     <>
-      <button
-        type="button"
-        onClick={openModal}
-        className="cursor-pointer bg-primary-200 h-10 pl-4 rounded-l-full mt-0.5 flex items-center shadow-md text-primary-1000 dark:text-indigo-100 dark:bg-primary-1000"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={1.5}
-          stroke="currentColor"
-          className="w-8 h-8 mr-1 hover:fill-primary-500 "
+      {!userIn ? (
+        <button
+          type="button"
+          onClick={openModal}
+          title="login or sign up"
+          className="cursor-pointer bg-primary-200 h-10 w-[52px] pl-4 rounded-l-full mt-0.5 flex items-center shadow-md  dark:bg-primary-1000"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"
-          />
-        </svg>
-      </button>
+          <IconContext.Provider
+            value={{
+              className:
+                "fill-primary-1000 text-2xl mt-1 mb-1 mr-2 inline hover:fill-primary-500 dark:bg-indigo-100",
+            }}
+          >
+            <SlLogin />
+          </IconContext.Provider>
+        </button>
+      ) : (
+        <button
+          type="button"
+          onClick={logout}
+          title="logout"
+          className="cursor-pointer bg-primary-200 h-10 w-[52px] pl-4 rounded-l-full mt-0.5 flex items-center shadow-md  dark:bg-primary-1000"
+        >
+          <IconContext.Provider
+            value={{
+              className:
+                "fill-primary-1000 text-2xl mt-1 mb-1 mr-2 inline hover:fill-primary-500 dark:bg-indigo-100",
+            }}
+          >
+            <SlLogout />
+          </IconContext.Provider>
+        </button>
+      )}
 
       <Transition appear show={isOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={closeModal}>
+        <Dialog
+          as="div"
+          className="relative z-10 flex justify-center"
+          onClose={closeModal}
+        >
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"

@@ -3,9 +3,16 @@ import {
   AuthErrorCodes,
   createUserWithEmailAndPassword,
   getAuth,
+  GoogleAuthProvider,
+  GithubAuthProvider,
+  signInWithPopup,
 } from "firebase/auth";
 import { firebaseApp } from "../lib/firebase";
 import Button from "./Button";
+import { FcGoogle } from "react-icons/fc";
+import { FaGithub } from "react-icons/fa";
+import { AiOutlineMail } from "react-icons/ai";
+import { IconContext } from "react-icons";
 
 export default function Signup() {
   const [input, setInput] = useState({ email: "", password: "" });
@@ -13,6 +20,7 @@ export default function Signup() {
 
   // initialised auth instance
   const auth = getAuth(firebaseApp);
+  const provider = new GoogleAuthProvider();
 
   // handle form submit
   const handleSubmit = (e: { preventDefault: () => void }) => {
@@ -46,6 +54,37 @@ export default function Signup() {
       [e.target.name]: e.target.value,
     }));
   };
+
+  // sign in with popup
+  function googleSignUp() {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        // ...
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // ...
+      });
+  }
+
+  // github auth
+  function gitHubSignUp() {
+    const githubSignIn = () => {
+      const provider = new GithubAuthProvider();
+
+      signInWithPopup(auth, provider)
+        .then((result) => {
+          // console.log(result.user);
+        })
+        .catch((error) => {
+          // Handle Errors here.
+          setError(error.code);
+          // console.log(error.code);
+        });
+    };
+  }
 
   return (
     <div className="form-body">
@@ -89,7 +128,48 @@ export default function Signup() {
         </div>
         <div className="btn mt-4">
           {error ? <p className="login-error">{error}</p> : null}
-          <Button title={"Sign Up"} type={"submit"} />
+          <Button
+            title={" sign up with email & password"}
+            type={"submit"}
+            aria={"sign up with email and password"}
+            tip={"sign up with email and password"}
+            iconLeft={
+              <IconContext.Provider value={{ className: "text-xl inline" }}>
+                <AiOutlineMail />
+              </IconContext.Provider>
+            }
+          />
+          <hr></hr>
+          <p className="italic text-neutral-500 text-center mt-1">
+            Sign up with your <em className="font-bold">Google</em> or{" "}
+            <em className="font-bold">GitHub</em> account.
+          </p>
+          <div className="flex justify-center">
+            <Button
+              style={3}
+              callBack={googleSignUp}
+              aria={"Sign up with your Google account."}
+              tip={"Sign up with your Google account."}
+              iconLeft={
+                <IconContext.Provider value={{ className: "text-xl inline" }}>
+                  <FcGoogle />
+                </IconContext.Provider>
+              }
+              title={""}
+            />
+            <Button
+              style={3}
+              callBack={gitHubSignUp}
+              aria={"Sign up with Github account."}
+              tip={"Sign up with Github account."}
+              iconLeft={
+                <IconContext.Provider value={{ className: "text-xl inline" }}>
+                  <FaGithub />
+                </IconContext.Provider>
+              }
+              title={""}
+            />
+          </div>
           {/* <button title="Sign up" aria-label="Signup" type="submit">
             Create account
           </button> */}

@@ -63,6 +63,7 @@ There are 3 types ...
 
 - icons can be passed through the `iconLeft` (_left_) and the `iconRight` (_right_) prop
 - the icon can be saved in an variable or passed directly
+- link to [react icons](https://react-icons.github.io/react-icons) and [npm react icons](https://www.npmjs.com/package/react-icons)
 
 ```jsx
 import { FaBeer } from "react-icons/fa";
