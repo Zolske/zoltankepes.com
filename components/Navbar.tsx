@@ -1,13 +1,14 @@
 import Image from "next/image";
 // import logo_title from "../assets/images/logo/zoltankepes_laptop_logo.png";
 import logo_title from "../assets/images/logo/zoltankepes_laptop_logo.svg";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import SignInSignUp from "./SignInSignUp";
 import ToggleButton from "./ToggleButton";
 import Button from "./Button";
 import ButtonToggle from "./ButtonToggle";
 import { SlLogin } from "react-icons/sl";
 import { IconContext } from "react-icons";
+import { UserLoggedInContext } from "../pages/_app";
 
 export default function Navbar() {
   const [mode, setMode] = useState("dark");
@@ -57,6 +58,9 @@ export default function Navbar() {
       <SlLogin />
     </IconContext.Provider>
   );
+
+  // FIXME: fix typescript error
+  const { userLoggedIn } = useContext(UserLoggedInContext);
 
   return (
     <>
@@ -159,6 +163,7 @@ export default function Navbar() {
           </h2>
         </div>
       </div>
+      <h1>{userLoggedIn && userLoggedIn.user_name}</h1>
     </>
   );
 }

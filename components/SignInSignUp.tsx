@@ -1,5 +1,5 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { Fragment, useState } from "react";
+import { Fragment, useState, useContext } from "react";
 import Login from "./Login";
 import Signup from "./Signup";
 import ButtonToggle from "./ButtonToggle";
@@ -8,11 +8,13 @@ import { IconContext } from "react-icons";
 import { SlLogin } from "react-icons/sl";
 import { SlLogout } from "react-icons/sl";
 import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
+import { UserLoggedInContext } from "../pages/_app";
 
 export default function SignInSignUp() {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const [signIn, setSignIn] = useState(true);
-  const [userIn, SetUserIn] = useState(false);
+  const [userIn, setUserIn] = useState(false);
+  const { userLoggedIn, setUserLoggedIn } = useContext(UserLoggedInContext);
 
   function closeModal() {
     setIsOpen(false);
@@ -20,6 +22,7 @@ export default function SignInSignUp() {
 
   function openModal() {
     setIsOpen(true);
+    console.log(userLoggedIn);
   }
 
   function switchForm() {
@@ -41,11 +44,18 @@ export default function SignInSignUp() {
   onAuthStateChanged(auth, (user) => {
     if (user && !userIn) {
       // User is signed in
-      SetUserIn(true);
+      setUserLoggedIn({
+        user_name: user.displayName,
+        user_id: user.uid,
+        user_email: user.email,
+        photo: user.photoURL,
+      });
+      setUserIn(true);
       closeModal();
     } else if (!user && userIn) {
       // User is signed out
-      SetUserIn(false);
+      setUserLoggedIn({});
+      setUserIn(false);
     }
   });
 
