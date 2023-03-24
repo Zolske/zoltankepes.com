@@ -59,8 +59,8 @@ export default function Navbar() {
     </IconContext.Provider>
   );
 
-  // FIXME: fix typescript error
-  const { userLoggedIn } = useContext(UserLoggedInContext);
+  // TODO: find better typescript solution for <any>
+  const { userLoggedIn } = useContext<any>(UserLoggedInContext);
 
   return (
     <>
