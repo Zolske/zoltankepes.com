@@ -14,6 +14,7 @@ export default function SignInSignUp() {
   const [isOpen, setIsOpen] = useState(false);
   const [signIn, setSignIn] = useState(true);
   const [userIn, setUserIn] = useState(false);
+  // FIXME: fix typescript error
   const { userLoggedIn, setUserLoggedIn } = useContext(UserLoggedInContext);
 
   function closeModal() {
