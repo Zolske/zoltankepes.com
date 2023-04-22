@@ -13,9 +13,9 @@ export default function Document() {
       />
       <Head />
       <body
-        className="h-screen bg-gradient-to-tl from-indigo-100  via-primary-100 to-yellow-100
-      dark:bg-gradient-to-tl dark:from-neutral-600  dark:via-neutral-700 dark:to-neutral-800
-      "
+        className="h-screen bg-gradient-to-br from-indigo-100 via-primary-100 to-yellow-100
+        dark:bg-gradient-to-tl dark:from-neutral-600  dark:via-neutral-700 dark:to-neutral-800
+        "
       >
         <Main />
         <NextScript />

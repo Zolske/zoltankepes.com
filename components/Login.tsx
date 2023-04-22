@@ -32,7 +32,7 @@ export default function Login() {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in
-        console.log(userCredential.user);
+        // console.log(userCredential.user);
         // ...
       })
       .catch((err) => {

@@ -8,10 +8,19 @@ import Button from "./Button";
 import ButtonToggle from "./ButtonToggle";
 import { SlLogin } from "react-icons/sl";
 import { IconContext } from "react-icons";
-import { UserLoggedInContext } from "../pages/_app";
+import { useEffect } from "react";
+import Link from "next/link";
+
+import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
+const auth = getAuth();
 
 export default function Navbar() {
+  // for url image loading
+  const myLoader = ({ src, width, quality }) => {
+    return `${src}?w=${width}&q=${quality || 75}`;
+  };
   const [mode, setMode] = useState("dark");
+  const [userData, setUserData] = useState<any>(false);
 
   function handleClickMode() {
     const html = document.getElementsByTagName("html")[0];
@@ -59,9 +68,13 @@ export default function Navbar() {
     </IconContext.Provider>
   );
 
-  // TODO: find better typescript solution for <any>
-  const { userLoggedIn } = useContext<any>(UserLoggedInContext);
-
+  onAuthStateChanged(auth, (user) => {
+    if (user && !userData) {
+      setUserData({ name: user.displayName, image: user.photoURL });
+    } else if (!user) {
+      setUserData(false);
+    }
+  });
   return (
     <>
       <div className="flex justify-between items-center">
@@ -69,6 +82,7 @@ export default function Navbar() {
         <div
           className="cursor-pointer bg-primary-200  dark:bg-primary-1000 h-10 pr-4 rounded-r-full mt-0.5 flex items-center shadow-md group"
           onClick={handleClickMenu}
+          title="menu"
         >
           <div>
             <div
@@ -85,28 +99,67 @@ export default function Navbar() {
             ></div>
           </div>
         </div>
-        <header className="flex items-center bg-primary-200 h-12 mt-0 rounded-b-3xl shadow-md pl-1 pr-1">
-          {/* laptop icon */}
-          <Image
-            src={logo_title}
-            alt="laptop drawn with a black pan"
-            priority
-            className="w-10 h-10 inline"
-          />
-          {/* website title */}
-          <h1 className="inline font-audiowide text-xl">
-            <span className="text-logo-red ">zoltan</span>
-            <span className="text-logo-blue">kepes</span>
-            <span className="text-logo-red">.com</span>
-          </h1>
-        </header>
+        <Link href="/">
+          {/* no logged in user or data */}
+          {!userData && (
+            <header className="flex items-center bg-primary-200 h-12 mt-0 rounded-b-3xl shadow-md pl-2 pr-2">
+              {/* laptop icon */}
+              <Image
+                src={logo_title}
+                alt="laptop drawn with a black pan"
+                priority
+                className="w-10 h-10 inline"
+              />
+              {/* website title */}
+              <h1 className="inline font-audiowide text-xl">
+                <span className="text-logo-red ">zoltan</span>
+                <span className="text-logo-blue">kepes</span>
+                <span className="text-logo-red">.com</span>
+              </h1>
+            </header>
+          )}
+          {/* logged in user and data */}
+          {userData && (
+            <header className="flex items-center bg-primary-200 h-20 mt-0 rounded-b-3xl shadow-md pl-2 pr-2">
+              {/* laptop icon */}
+              <Image
+                src={logo_title}
+                alt="laptop drawn with a black pan"
+                priority
+                className="w-10 h-10 inline"
+              />
+              {/* website title */}
+              <div className="flex flex-col items-center m-1">
+                <h1 className="inline font-audiowide text">
+                  <span className="text-logo-red ">zoltan</span>
+                  <span className="text-logo-blue">kepes</span>
+                  <span className="text-logo-red">.com</span>
+                </h1>
+                <span className="text-logo-blue text-xs">Welcome</span>
+                <span className="text-logo-red font-audiowide text">
+                  {userData.name}
+                </span>
+              </div>
+              {userData.image && (
+                <Image
+                  className=" rounded-full w-10 h-10 inline"
+                  loader={myLoader}
+                  src={userData.image}
+                  alt={`user image`}
+                  width={40}
+                  height={40}
+                />
+              )}
+            </header>
+          )}
+        </Link>
         {/* login or sign up button*/}
         <SignInSignUp />
       </div>
       {/* sidepanel triggered through hamburger menu */}
       <div
         id="sidepanel"
-        className="w-[360px] fixed z-10 h-[250px] top-14 -left-[360px]  bg-neutral-300 overflow-x-hidden transition duration-1000 ease-in-out rounded-r-xl shadow-lg"
+        className="w-[360px] fixed z-10 h-[250px] top-24 -left-[360px]  bg-neutral-300 overflow-x-hidden transition duration-1000 ease-in-out rounded-r-xl shadow-lg"
       >
         <div className="bg-indigo-200 shadow-lg">
           <h2 className="ml-2 text-indigo-600 bg-indigo-100 w-fit pl-1 pr-2 rounded-r-full">
@@ -162,8 +215,13 @@ export default function Navbar() {
             Pages
           </h2>
         </div>
+        <Link href="/" onClick={handleClickMenu} className="block">
+          Home
+        </Link>
+        <Link href="/notes" onClick={handleClickMenu} className="block">
+          Notes
+        </Link>
       </div>
-      <h1>{userLoggedIn && userLoggedIn.user_name}</h1>
     </>
   );
 }
