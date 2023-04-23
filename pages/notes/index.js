@@ -11,7 +11,7 @@ export async function getStaticProps() {
   // get json from the realtime database
   // https://firebase.google.com/docs/database/web/read-and-write#read_data
   let db_json,
-    db_array = false;
+    db_array = null;
   onValue(rt_db_json_ref, (snapshot) => {
     db_array = createJsonArray(snapshot.val());
     db_json = snapshot.val();
