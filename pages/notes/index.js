@@ -73,7 +73,7 @@ export default function Notes() {
     if (db_json && db_array) {
       // stop "setInterval"
       clearInterval(myInterval);
-      // DO NOT DELETE! is needed to trigger a rerender of the page!!
+      // DO NOT DELETE! is needed to trigger a rerender of the page!!!
       setWaitData("data has arrived");
     }
   }
