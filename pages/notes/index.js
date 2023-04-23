@@ -1,24 +1,26 @@
 import { ref, onValue } from "firebase/database";
-import { db } from "../../lib/firebase";
 import Image from "next/image";
 import icon_folder from "../../assets/images/icons/folder_page.png";
 import Link from "next/link";
 import { createJsonArray } from "../../lib/helperFunctions";
 import { rt_db_json_ref } from "../../lib/firebase";
 import { useState, useEffect } from "react";
+import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 
 export async function getStaticProps() {
   // get json from the realtime database
   // https://firebase.google.com/docs/database/web/read-and-write#read_data
-  let data = "not ready";
+  let db_json,
+    db_array = false;
   onValue(rt_db_json_ref, (snapshot) => {
-    // data = snapshot.val();
-    data = createJsonArray(snapshot.val());
+    db_array = createJsonArray(snapshot.val());
+    db_json = snapshot.val();
   });
 
   return {
     props: {
-      json: data,
+      db_json: db_json,
+      db_array: db_array,
     },
   };
 }
@@ -27,18 +29,25 @@ const myLoader = ({ src, width, quality }) => {
   return `${src}?w=${width}&q=${quality || 75}`;
 };
 
-export default function Notes({ json }) {
-  // useEffect(() => {
-  //   console.log(data);
-  // }, [data]);
+export default function Notes({ db_json, db_array }) {
+  const [jsonArray, setJsonArray] = useState("wait for data to be loaded");
 
-  // const note_folder = Object.keys(json);
+  function waitData() {
+    if (db_json && db_array) {
+      clearInterval(myInterval);
+      setJsonArray("data has arrived");
+      console.log(db_json);
+      console.log(db_array);
+    }
+  }
+
+  const myInterval = setInterval(waitData, 100);
 
   return (
     <>
-      <h1>{json}</h1>
+      {!db_json && !db_array && <h1>{jsonArray}</h1>}
       {/* {note_folder.map((folder) => (
-        <div key={folder}>
+        <div key={folder}>k
           <h3>
             {json[folder].icon && (
               <Image
