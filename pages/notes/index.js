@@ -7,30 +7,37 @@ import { rt_db_json_ref } from "../../lib/firebase";
 import { useState, useEffect } from "react";
 import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 
-export async function getStaticProps() {
-  // get json from the realtime database
-  // https://firebase.google.com/docs/database/web/read-and-write#read_data
-  let db_json,
-    db_array = null;
-  onValue(rt_db_json_ref, (snapshot) => {
-    db_array = createJsonArray(snapshot.val());
-    db_json = snapshot.val();
-  });
+// export async function getStaticProps() {
+// get json from the realtime database
+// https://firebase.google.com/docs/database/web/read-and-write#read_data
+//   let db_json,
+//     db_array = null;
+//   onValue(rt_db_json_ref, (snapshot) => {
+//     db_array = createJsonArray(snapshot.val());
+//     db_json = snapshot.val();
+//   });
 
-  return {
-    props: {
-      db_json: db_json,
-      db_array: db_array,
-    },
-  };
-}
+//   return {
+//     props: {
+//       db_json: db_json,
+//       db_array: db_array,
+//     },
+//   };
+// }
 
 const myLoader = ({ src, width, quality }) => {
   return `${src}?w=${width}&q=${quality || 75}`;
 };
 
-export default function Notes({ db_json, db_array }) {
+export default function Notes() {
   const [jsonArray, setJsonArray] = useState("wait for data to be loaded");
+  let db_json,
+    db_array = null;
+
+  onValue(rt_db_json_ref, (snapshot) => {
+    db_array = createJsonArray(snapshot.val());
+    db_json = snapshot.val();
+  });
 
   function waitData() {
     if (db_json && db_array) {
