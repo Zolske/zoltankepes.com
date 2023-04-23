@@ -47,7 +47,7 @@ export default function Notes({ db_json, db_array }) {
     <>
       {!db_json && !db_array && <h1>{jsonArray}</h1>}
       {/* {note_folder.map((folder) => (
-        <div key={folder}>k
+        <div key={folder}>
           <h3>
             {json[folder].icon && (
               <Image
