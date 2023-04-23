@@ -7,24 +7,63 @@ import { rt_db_json_ref } from "../../lib/firebase";
 import { useState, useEffect } from "react";
 import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 
-export async function getStaticProps() {
-  // get json from the realtime database
-  // https://firebase.google.com/docs/database/web/read-and-write#read_data
-  //   let db_json,
-  //     db_array = null;
-  //   onValue(rt_db_json_ref, (snapshot) => {
-  //     db_array = createJsonArray(snapshot.val());
-  //     db_json = snapshot.val();
-  //   });
+// export async function getStaticProps() {
+// get json from the realtime database
+// https://firebase.google.com/docs/database/web/read-and-write#read_data
+//   let db_json,
+//     db_array = null;
+//   onValue(rt_db_json_ref, (snapshot) => {
+//     db_array = createJsonArray(snapshot.val());
+//     db_json = snapshot.val();
+//   });
+// let db_json,
+//   db_array = null;
+
+// // read data from firebase realtime database
+// onValue(rt_db_json_ref, (snapshot) => {
+//   db_array = createJsonArray(snapshot.val())
+//     ? createJsonArray(snapshot.val())
+//     : null;
+//   db_json = snapshot.val() ? snapshot.val() : null;
+// });
+
+// // check if data has been updated
+// function updateData() {
+//   // if db_json && db_array are not "null"
+//   if (db_json && db_array) {
+//     // stop "setInterval"
+//     clearInterval(myInterval);
+//     // setWaitData("data has arrived");
+//   }
+// }
+
+// // keep calling the "updateData" function
+// const myInterval = setInterval(updateData, 3000);
+
+//   return {
+//     props: {
+//       db_json: db_json,
+//       db_array: db_array,
+//     },
+//   };
+// }
+
+// process images from url
+const myLoader = ({ src, width, quality }) => {
+  return `${src}?w=${width}&q=${quality || 75}`;
+};
+
+export default function Notes() {
+  // message shown to the user for the time the data is loading
+  const [waitData, setWaitData] = useState("wait for data to be loaded");
+
   let db_json,
-    db_array = null;
+    db_array = false;
 
   // read data from firebase realtime database
   onValue(rt_db_json_ref, (snapshot) => {
-    db_array = createJsonArray(snapshot.val())
-      ? createJsonArray(snapshot.val())
-      : null;
-    db_json = snapshot.val() ? snapshot.val() : null;
+    db_array = createJsonArray(snapshot.val());
+    db_json = snapshot.val();
   });
 
   // check if data has been updated
@@ -33,29 +72,12 @@ export async function getStaticProps() {
     if (db_json && db_array) {
       // stop "setInterval"
       clearInterval(myInterval);
-      // setWaitData("data has arrived");
+      setWaitData("data has arrived");
     }
   }
 
   // keep calling the "updateData" function
-  const myInterval = setInterval(updateData, 3000);
-
-  return {
-    props: {
-      db_json: db_json,
-      db_array: db_array,
-    },
-  };
-}
-
-// process images from url
-const myLoader = ({ src, width, quality }) => {
-  return `${src}?w=${width}&q=${quality || 75}`;
-};
-
-export default function Notes({ db_json, db_array }) {
-  // message shown to the user for the time the data is loading
-  const [waitData, setWaitData] = useState("wait for data to be loaded");
+  const myInterval = setInterval(updateData, 100);
   // console.log(db_array);
   return (
     <>
