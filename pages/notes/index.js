@@ -1,6 +1,7 @@
 import { ref, onValue } from "firebase/database";
 import Image from "next/image";
 import icon_folder from "../../assets/images/icons/folder_page.png";
+import icon_file from "../../assets/images/icons/file.png";
 import Link from "next/link";
 import { createJsonArray } from "../../lib/helperFunctions";
 import { rt_db_json_ref } from "../../lib/firebase";
@@ -72,6 +73,7 @@ export default function Notes() {
     if (db_json && db_array) {
       // stop "setInterval"
       clearInterval(myInterval);
+      // DO NOT DELETE! is needed to trigger a rerender of the page!!
       setWaitData("data has arrived");
     }
   }
@@ -85,7 +87,83 @@ export default function Notes() {
       {db_array &&
         db_array.map((folder) => (
           <div key={folder[0]}>
-            <h3>{folder[0]}</h3>
+            <h3>
+              {
+                <Image
+                  loader={myLoader}
+                  src={
+                    db_json[folder[0]].icon
+                      ? db_json[folder[0]].icon
+                      : icon_folder
+                  }
+                  alt={`${folder[0]} icon`}
+                  width={25}
+                  height={25}
+                  className="inline-block mr-2"
+                />
+              }
+              {folder[0]}
+            </h3>
+            {folder[1] &&
+              folder[1].map((link) => (
+                <>
+                  <ul>
+                    <li key={link}>
+                      <Image
+                        loader={myLoader}
+                        src={icon_file}
+                        alt={`${link} icon`}
+                        width={15}
+                        height={15}
+                        className="inline-block mr-1"
+                      />
+                      {link}
+                    </li>
+                  </ul>
+                </>
+              ))}
+            {folder[2] &&
+              folder[2].map((subfolder) => (
+                <>
+                  <h4 key={subfolder[0]}>
+                    {/* // console.log(
+                      //   db_json[folder[0]].SubFolder[subfolder[0]].icon
+                      // ) */}
+                    <Image
+                      loader={myLoader}
+                      src={
+                        db_json[folder[0]].SubFolder[subfolder[0]].icon
+                          ? db_json[folder[0]].SubFolder[subfolder[0]].icon
+                          : icon_folder
+                      }
+                      alt={`${subfolder[0]} icon`}
+                      width={25}
+                      height={25}
+                      className="inline-block mr-2"
+                    />
+
+                    {subfolder[0]}
+                  </h4>
+                  {subfolder[1] &&
+                    subfolder[1].map((link) => (
+                      <>
+                        <ul>
+                          <li key={link}>
+                            <Image
+                              loader={myLoader}
+                              src={icon_file}
+                              alt={`${link} icon`}
+                              width={15}
+                              height={15}
+                              className="inline-block mr-1"
+                            />
+                            {link}
+                          </li>
+                        </ul>
+                      </>
+                    ))}
+                </>
+              ))}
           </div>
         ))}
       {/* {note_folder.map((folder) => (
