@@ -31,7 +31,6 @@ export default function Navbar() {
     darkMode?.classList.toggle("hidden");
     html.classList.toggle("dark");
     setMode(mode === "dark" ? "light" : "dark");
-    console.log("hello from handleClickMode");
   }
 
   function handleClickMenu() {

@@ -2,4 +2,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .z-placeholder {
+    @apply placeholder:text-neutral-300 placeholder:italic placeholder:text-sm;
+  }
+  .label-text {
+    @apply text-xs tracking-[5px] text-neutral-400 block ml-1 uppercase;
+  }
+}
+
 /*<<< end <<<  tailwind */

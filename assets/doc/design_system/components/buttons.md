@@ -8,11 +8,17 @@
 - import the **Button** component (_`import Button from ...`_)
 - use the component with its default props `<Button />` (_see below for more prop options_)
 
-|   button style |                                      high priority                                      |                                      medium priority                                      |                                      low priority                                      |                                       _all_ disabled                                        |
-| -------------: | :-------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------: |
-|      **image** | ![high priority button](../../../images/doc_images/components/buttons/button_high.webp) | ![high priority button](../../../images/doc_images/components/buttons/button_medium.webp) | ![high priority button](../../../images/doc_images/components/buttons/button_low.webp) | ![high priority button](../../../images/doc_images/components/buttons/button_disabled.webp) |
-| **style prop** |                                       `style={1}`                                       |                                        `style={2}`                                        |                              `style={3}` <br>**default**                               |                                      `disable={true}`                                       |
-| **title prop** |                                    `title={"high"}`                                     |                                    `title={"medium"}`                                     |                                    `title={"low"}`                                     |                                    `title={"disabled"}`                                     |
+|   button style |                                      high priority                                      |                                       medium priority                                       |                                     low priority                                      |                                       neutral                                        |                                     _all_ disabled                                     |
+| -------------: | :-------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------: |
+|      **image** | ![high priority button](../../../images/doc_images/components/buttons/button_high.webp) | ![medium priority button](../../../images/doc_images/components/buttons/button_medium.webp) | ![low priority button](../../../images/doc_images/components/buttons/button_low.webp) | ![neutral button](../../../images/doc_images/components/buttons/button_neutral.webp) | ![disabled button](../../../images/doc_images/components/buttons/button_disabled.webp) |
+| **style prop** |                                       `style={1}`                                       |                                         `style={2}`                                         |                              `style={3}` <br>**default**                              |                                     `style={4}`                                      |                                    `disable={true}`                                    |
+| **title prop** |                                    `title={"high"}`                                     |                                     `title={"medium"}`                                      |                                    `title={"low"}`                                    |                                 `title={"neutral"}`                                  |                                  `title={"disabled"}`                                  |
+
+|   button style |                                       danger                                       |                                          danger light                                          |                                       confirm                                        |                                          confirm light                                           |
+| -------------: | :--------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------: |
+|      **image** | ![danger button](../../../images/doc_images/components/buttons/button_danger.webp) | ![danger light button](../../../images/doc_images/components/buttons/button_danger_light.webp) | ![confirm button](../../../images/doc_images/components/buttons/button_confirm.webp) | ![confirm light button](../../../images/doc_images/components/buttons/button_confirm_light.webp) |
+| **style prop** |                                    `style={5}`                                     |                                          `style={6}`                                           |                                     `style={7}`                                      |                                           `style={8}`                                            |
+| **title prop** |                                 `title={"danger"}`                                 |                                    `title={"danger light"}`                                    |                                 `title={"confirm"}`                                  |                                    `title={"confirm light"}`                                     |
 
 ---
 
@@ -34,6 +40,22 @@
 
 ---
 
+### "Custom Button Style" props
+
+- it is possible to overwrite the default styles
+- it only works on button **style 3** or on the **default style** (_without the style prop_)
+
+|               styles |          prop           |   default value   |     tailwind class     |
+| -------------------: | :---------------------: | :---------------: | :--------------------: |
+|           **border** |      `border={""}`      |  `"primary-400"`  |  `border-primary-400`  |
+|     **border width** |   `border_width={""}`   |       `"2"`       |       `border-2`       |
+|       **text color** |    `text_color={""}`    |  `"primary-500"`  |   `text-primary-500`   |
+| **background color** |        `bg={""}`        | `""` (_not used_) |       `bg-`COLOR       |
+|       **hover text** | `hover_text_color={""}` |   `"[#FFFFFF]"`   | `hover:text-[#FFFFFF]` |
+| **hover background** |     `hover_bg={""}`     |  `"primary-600"`  | `hover:bg-primary-600` |
+
+---
+
 ### aria label
 
 - the default aria label is **empty** unless the button is `disable={true}` then it is **always** `"Button is disabled."`
@@ -46,6 +68,14 @@
 - the default size is "`sm`"
 - overwrite the default with the `size` prop (_e.g. `<Button size={"base"} />`_)
 - the available sizes are based on [taiwinds font size classes](https://tailwindcss.com/docs/font-size) without `text-` (_e.g. tailwinds `text-base` becomes `base`_)
+
+---
+
+### margin & padding
+
+- the default values are `padding = "pl-2 pr-2 pt-1 pb-1"` & `margin = "m-2"`
+- they can be overwritten with the `padding={""}` & `margin={""}` prop
+- all (padding or margin) values need to be changed if overwritten (_e.g. "mr-1 ml-1"_)
 
 ---
 

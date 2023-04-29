@@ -1,0 +1,178 @@
+import Button from "./Button";
+import { Dialog, Transition } from "@headlessui/react";
+import { Fragment, useState } from "react";
+import { db } from "../lib/firebase";
+import { ref, remove } from "firebase/database";
+import Image from "next/image";
+import icon_correct from "../assets/images/icons/check.png";
+import icon_wrong from "../assets/images/icons/cross.png";
+import { allFolderNames } from "../lib/helperFunctions";
+import toast, { Toaster } from "react-hot-toast";
+import icon_delete_folder from "../assets/images/icons/delete-folder.png";
+
+// process images from url
+const myLoader = ({ src, width, quality }) => {
+  return `${src}?w=${width}&q=${quality || 75}`;
+};
+
+export default function DeleteNoteFolder({ path, db_array, folderName }) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  function closeModal() {
+    setIsOpen(false);
+  }
+
+  function openModal() {
+    setIsOpen(true);
+    folderNotes();
+  }
+
+  function deleteFolderDB(path) {
+    const pathToFolder = ref(db, `markdown_note_index/${path}`);
+    remove(pathToFolder)
+      .then(() => {
+        // Data saved successfully!
+        toast.success(
+          `The folder "${folderName}", was successfully deleted fom the database.`,
+          {
+            duration: 4000,
+          }
+        );
+      })
+      .catch((error) => {
+        // The write failed...
+        toast.error(`see console log for error: "${error}"`, {
+          duration: 4000,
+        });
+        console.log(error);
+      });
+    // close the menu after
+    closeModal();
+  }
+
+  function folderNotes() {
+    let notes = [];
+    for (let i = 0; i < db_array.length; i++) {
+      if (folderName == db_array[i][0]) {
+        if (db_array[i][1]) {
+          db_array[i][1].forEach((item) => notes.push(item));
+        }
+        if (db_array[i][2]) {
+          for (let a = 0; a < db_array[i][2].length; a++) {
+            if (db_array[i][2][a][1]) {
+              db_array[i][2][a][1].forEach((item) => notes.push(item));
+            }
+          }
+        }
+      }
+    }
+    return notes.sort();
+  }
+
+  // list of notes which are contained within the folder
+  let noteList = folderNotes();
+
+  return (
+    <>
+      <Toaster />
+
+      <Button
+        title={""}
+        tip={`delete "${folderName}" and its notes`}
+        padding="pl-1 pr-1 pb-0 pt-0"
+        margin="m-1 mr-2"
+        callBack={openModal}
+        iconLeft={
+          <Image
+            loader={myLoader}
+            src={icon_delete_folder}
+            alt={`icon`}
+            width={30}
+            height={30}
+            className="inline-block"
+          />
+        }
+      />
+
+      <Transition appear show={isOpen} as={Fragment}>
+        <Dialog
+          as="div"
+          className="relative z-10 flex justify-center"
+          onClose={closeModal}
+        >
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-black bg-opacity-25" />
+          </Transition.Child>
+
+          <div className="fixed top-10 overflow-y-auto">
+            <div className="flex min-h-full items-center justify-center p-4 text-center ">
+              <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0 scale-95"
+                enterTo="opacity-100 scale-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100 scale-100"
+                leaveTo="opacity-0 scale-95"
+              >
+                <Dialog.Panel className="w-full sm:w-[500px]  transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all bg-[#fff]">
+                  <Dialog.Title
+                    as="h3"
+                    className="text-lg font-medium leading-6 text-gray-900 flex items-center justify-between"
+                  >
+                    <h3>
+                      Delete &#34;
+                      <span className="underline decoration-double">
+                        {folderName}
+                      </span>
+                      &#34; folder.
+                    </h3>
+                    <Button
+                      style={6}
+                      title={"close"}
+                      tip={"close form"}
+                      aria={"close login or sign-up form"}
+                      callBack={closeModal}
+                    />
+                  </Dialog.Title>
+                  <hr className="text-neutral-300" />
+                  {noteList[0] && (
+                    <>
+                      <p className=" text-neutral-400 text-sm mt-4">
+                        Note: You are also deleting the following file(s):
+                      </p>
+                      <div className="text-center mb-4">
+                        {noteList.map((note) => (
+                          <span
+                            key={note}
+                            className="bg-primary-200 pl-1 pr-1 inline-block text-center ml-2 mt-1"
+                          >
+                            {note}{" "}
+                          </span>
+                        ))}
+                      </div>
+                    </>
+                  )}
+                  <hr className="text-neutral-300" />
+                  <Button
+                    title="delete folder"
+                    tip={"Delete the folder and its content."}
+                    callBack={() => deleteFolderDB(path)}
+                  />
+                </Dialog.Panel>
+              </Transition.Child>
+            </div>
+          </div>
+        </Dialog>
+      </Transition>
+    </>
+  );
+}

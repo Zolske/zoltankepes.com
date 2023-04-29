@@ -95,37 +95,33 @@ export default function Login() {
           <em className="font-bold">email</em> address.
         </p>
         <div className="email-input mt-4">
-          <label htmlFor="email" className="label-name">
-            <span className=" text-sm tracking-widest text-neutral-500 block">
-              Email:
-            </span>
+          <label htmlFor="email" className="label-text">
+            Email:
           </label>
           <input
             name="email"
-            placeholder="Enter email"
+            placeholder=" Enter email"
             type="text"
             onChange={handleChange}
             value={input.email}
             required
             autoComplete="true"
-            className="border-2 rounded-sm border-neutral-100 shadow-inner"
+            className="border-2 rounded-sm border-neutral-100 shadow-inner z-placeholder w-full"
           />
         </div>
         <div className="password-input mt-4">
-          <label htmlFor="password" className="label-name">
-            <span className="text-sm tracking-widest text-neutral-500 block">
-              Password:
-            </span>
+          <label htmlFor="password" className="label-text">
+            Password:
           </label>
           <input
             name="password"
-            placeholder="Enter password"
+            placeholder=" Enter password"
             onChange={handleChange}
             value={input.password}
             type="password"
             required
             autoComplete="true"
-            className="border-2 rounded-sm border-neutral-100 shadow-inner"
+            className="border-2 rounded-sm border-neutral-100 shadow-inner z-placeholder w-full"
           />
         </div>
         <div className="btn mt-4">
@@ -148,12 +144,12 @@ export default function Login() {
 
           {error ? (
             <div>
-              <hr></hr>
+              <hr className="text-neutral-300" />
               <h3 className="font-bold text-red-800">Error Message:</h3>
               <p className="login-error text-red-600">{error}</p>
             </div>
           ) : null}
-          <hr></hr>
+          <hr className="text-neutral-300" />
           <p className="italic text-neutral-500 text-center mt-1">
             Or login with your <em className="font-bold">Google</em> or{" "}
             <em className="font-bold">GitHub</em> account.
