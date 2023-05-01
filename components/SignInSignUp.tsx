@@ -121,7 +121,7 @@ export default function SignInSignUp() {
                     {signIn && <span>Login</span>}
                     {!signIn && <span>Sign Up</span>}
                     <Button
-                      style={6}
+                      style={4}
                       title={"close"}
                       tip={"close form"}
                       aria={"close login or sign-up form"}

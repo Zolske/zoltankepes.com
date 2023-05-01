@@ -25,6 +25,7 @@ export default function CreateNoteFolder({ db_json, parent_name = "" }) {
   const [check_empty, setCheck_empty] = useState(false);
   const [check_dot, setCheck_dot] = useState(true);
   const [check_pound, setCheck_pound] = useState(true);
+  const [check_percent, setCheck_percent] = useState(true);
   const [check_dollar, setCheck_dollar] = useState(true);
   const [check_sbleft, setCheck_sbleft] = useState(true);
   const [check_sbright, setCheck_sbright] = useState(true);
@@ -72,6 +73,8 @@ export default function CreateNoteFolder({ db_json, parent_name = "" }) {
     setCheck_pound(name.search(/\#/) === -1 ? true : false);
     // check if string contains "$"
     setCheck_dollar(name.search(/\$/) === -1 ? true : false);
+    // check if string contains "%"
+    setCheck_percent(name.search(/\%/) === -1 ? true : false);
     // check if string contains "["
     setCheck_sbleft(name.search(/\[/) === -1 ? true : false);
     // check if string contains "]"
@@ -140,8 +143,8 @@ export default function CreateNoteFolder({ db_json, parent_name = "" }) {
               loader={myLoader}
               src={icon_create_folder}
               alt={`icon`}
-              width={30}
-              height={30}
+              width={20}
+              height={20}
               className="inline-block"
             />
           }
@@ -195,7 +198,7 @@ export default function CreateNoteFolder({ db_json, parent_name = "" }) {
                       </>
                     )}
                     <Button
-                      style={6}
+                      style={4}
                       title={"close"}
                       tip={"close form"}
                       aria={"close login or sign-up form"}
@@ -250,6 +253,7 @@ export default function CreateNoteFolder({ db_json, parent_name = "" }) {
                             check_dot &&
                             check_pound &&
                             check_dollar &&
+                            check_percent &&
                             check_sbleft &&
                             check_sbright
                               ? icon_correct
@@ -260,7 +264,7 @@ export default function CreateNoteFolder({ db_json, parent_name = "" }) {
                           height={15}
                           className="inline-block mr-1"
                         />
-                        contain the characters:{" "}
+                        contain the character:{" "}
                         <span
                           className={`${
                             check_dot ? "bg-green-300" : "bg-red-300"
@@ -281,6 +285,13 @@ export default function CreateNoteFolder({ db_json, parent_name = "" }) {
                           } w-4 inline-block text-center text-neutral-600`}
                         >
                           $
+                        </span>{" "}
+                        <span
+                          className={`${
+                            check_percent ? "bg-green-300" : "bg-red-300"
+                          } w-4 inline-block text-center text-neutral-600`}
+                        >
+                          %
                         </span>{" "}
                         <span
                           className={`${
@@ -357,6 +368,7 @@ export default function CreateNoteFolder({ db_json, parent_name = "" }) {
                   <hr className="text-neutral-300" />
                   <Button
                     title="create folder"
+                    style={7}
                     tip={"Create a new folder for notes."}
                     callBack={() => createFolderDB(parent_name)}
                     disable={
@@ -364,6 +376,7 @@ export default function CreateNoteFolder({ db_json, parent_name = "" }) {
                       check_dot &&
                       check_pound &&
                       check_dollar &&
+                      check_percent &&
                       check_sbleft &&
                       check_sbright &&
                       check_name

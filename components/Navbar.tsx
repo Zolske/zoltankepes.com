@@ -142,7 +142,7 @@ export default function Navbar() {
               {userData.image && (
                 <Image
                   className=" rounded-full w-10 h-10 inline"
-                  loader={myLoader}
+                  // loader={myLoader}
                   src={userData.image}
                   alt={`user image`}
                   width={40}

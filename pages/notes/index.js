@@ -10,6 +10,8 @@ import { useState, useEffect, useRef } from "react";
 import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 import CreateNoteFolder from "../../components/CreateNoteFolder";
 import DeleteNoteFolder from "../../components/DeleteNoteFolder";
+import CreateNote from "../../components/CreateNote";
+import DeleteNote from "../../components/DeleteNote";
 import Button from "../../components/Button";
 
 // export async function getStaticProps() {
@@ -137,68 +139,88 @@ export default function Notes() {
 
   return (
     <>
-      <Button callBack={console.log(db_json.current)} title="log json" />
+      {/* <Button callBack={console.log(db_json.current)} title="log json" />
       <Button
         callBack={() => console.log(db_array.current)}
         title="log array"
-      />
+      /> */}
       {!db_json.current && !db_array.current && <h1>{waitData}</h1>}
       {db_array.current &&
         db_array.current.map((folder) => (
           <div key={folder[0]}>
-            <h3
+            {/* folder from the root of the database */}
+            <div
+              className="group flex items-center"
               onMouseOver={(e) =>
                 readMetaData(db_json.current[folder[0]]?.MetaData)
               }
-              className="inline-block"
             >
-              {
-                <Image
-                  loader={myLoader}
-                  src={
-                    db_json.current[folder[0]]?.MetaData?.icon
-                      ? db_json.current[folder[0]]?.MetaData?.icon
-                      : icon_folder
-                  }
-                  alt={`${folder[0]} icon`}
-                  width={25}
-                  height={25}
-                  className="inline-block mr-2"
+              <Image
+                loader={myLoader}
+                src={
+                  db_json.current[folder[0]]?.MetaData?.icon
+                    ? db_json.current[folder[0]]?.MetaData?.icon
+                    : icon_folder
+                }
+                alt={`${folder[0]} icon`}
+                width={25}
+                height={25}
+                className="mr-2"
+              />
+              <h3>{folder[0]}</h3>
+              <div className="invisible group-hover:visible">
+                <CreateNoteFolder
+                  db_json={db_json.current}
+                  parent_name={folder[0]}
                 />
-              }
-              {folder[0]}
-            </h3>
-            <CreateNoteFolder
-              db_json={db_json.current}
-              parent_name={folder[0]}
-            />
-            <DeleteNoteFolder
-              path={folder[0]}
-              db_array={db_array.current}
-              folderName={folder[0]}
-            />
+                <DeleteNoteFolder
+                  path={folder[0]}
+                  db_array={db_array.current}
+                  folderName={folder[0]}
+                  rootFolderName={folder[0]}
+                  pathFileStorage={folder[0]}
+                />
+                <CreateNote
+                  path={folder[0] + "/Notes"}
+                  pathFileStorage={folder[0]}
+                  db_json={db_json.current}
+                  folderName={folder[0]}
+                />
+              </div>
+            </div>
+            {/* notes from root folder */}
             {folder[1] &&
               folder[1].map((link) => (
                 <>
                   <ul>
                     <li
                       key={link}
-                      className="inline-block"
+                      className="group flex items-center"
                       onMouseOver={(e) =>
                         readMetaData(
                           db_json.current[folder[0]].Notes[link]?.MetaData
                         )
                       }
                     >
-                      <Image
-                        loader={myLoader}
-                        src={icon_file}
-                        alt={`${link} icon`}
-                        width={15}
-                        height={15}
-                        className="inline-block mr-1"
-                      />
-                      {link}
+                      <Link href={`/notes/${folder[0]}/${link}`}>
+                        <Image
+                          loader={myLoader}
+                          src={icon_file}
+                          alt={`${link} icon`}
+                          width={15}
+                          height={15}
+                          className="inline-block mr-1"
+                        />
+                        {link}
+                      </Link>
+                      <div className="invisible group-hover:visible">
+                        <DeleteNote
+                          path={folder[0] + "/Notes/" + link}
+                          db_array={db_array.current}
+                          noteName={link}
+                          pathFileStorage={folder[0]}
+                        />
+                      </div>
                     </li>
                   </ul>
                 </>
@@ -206,14 +228,11 @@ export default function Notes() {
             {folder[2] &&
               folder[2].map((subfolder) => (
                 <>
-                  <h4
-                    key={subfolder[0]}
-                    className="inline-block"
+                  {/*subfolder from the root of the database */}
+                  <div
+                    className="group flex items-center"
                     onMouseOver={(e) =>
-                      readMetaData(
-                        db_json.current[folder[0]].SubFolder[subfolder[0]]
-                          ?.MetaData
-                      )
+                      readMetaData(db_json.current[folder[0]]?.MetaData)
                     }
                   >
                     <Image
@@ -232,23 +251,46 @@ export default function Notes() {
                       alt={`${subfolder[0]} icon`}
                       width={25}
                       height={25}
-                      className="inline-block mr-2"
+                      className="mr-2"
                     />
-
-                    {subfolder[0]}
-                  </h4>
-                  <DeleteNoteFolder
-                    path={folder[0] + "/SubFolder/" + subfolder[0]}
-                    db_array={db_array.current}
-                    folderName={subfolder[0]}
-                  />
+                    <h4
+                      key={subfolder[0]}
+                      className="inline-block"
+                      onMouseOver={(e) =>
+                        readMetaData(
+                          db_json.current[folder[0]].SubFolder[subfolder[0]]
+                            ?.MetaData
+                        )
+                      }
+                    >
+                      {subfolder[0]}
+                    </h4>
+                    <div className="invisible group-hover:visible">
+                      <DeleteNoteFolder
+                        path={folder[0] + "/SubFolder/" + subfolder[0]}
+                        db_array={db_array.current}
+                        folderName={subfolder[0]}
+                        rootFolderName={folder[0]}
+                        pathFileStorage={folder[0] + "/" + subfolder[0]}
+                      />
+                      <CreateNote
+                        path={
+                          folder[0] + "/SubFolder/" + subfolder[0] + "/Notes"
+                        }
+                        pathFileStorage={folder[0] + "/" + subfolder[0]}
+                        db_json={db_json.current}
+                        folderName={subfolder[0]}
+                      />
+                    </div>
+                  </div>
+                  {/* notes from the subfolder */}
                   {subfolder[1] &&
                     subfolder[1].map((link) => (
                       <>
                         <ul>
                           <li
                             key={link}
-                            className="inline-block"
+                            className="group flex items-center"
                             onMouseOver={(e) =>
                               readMetaData(
                                 db_json.current[folder[0]].SubFolder[
@@ -257,16 +299,33 @@ export default function Notes() {
                               )
                             }
                           >
-                            <Image
-                              key={link + icon_file}
-                              loader={myLoader}
-                              src={icon_file}
-                              alt={`${link} icon`}
-                              width={15}
-                              height={15}
-                              className="inline-block mr-1"
-                            />
-                            {link}
+                            <Link
+                              href={`/notes/${folder[0]}/${subfolder[0]}/${link}`}
+                            >
+                              <Image
+                                key={link + icon_file}
+                                loader={myLoader}
+                                src={icon_file}
+                                alt={`${link} icon`}
+                                width={15}
+                                height={15}
+                                className="inline-block mr-1"
+                              />
+                              {link}
+                            </Link>
+                            <div className="invisible group-hover:visible">
+                              <DeleteNote
+                                path={
+                                  folder[0] +
+                                  "/SubFolder/" +
+                                  subfolder[0] +
+                                  "/Notes/" +
+                                  link
+                                }
+                                pathFileStorage={folder[0] + "/" + subfolder[0]}
+                                noteName={link}
+                              />
+                            </div>
                           </li>
                         </ul>
                       </>

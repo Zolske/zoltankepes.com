@@ -1,26 +1,26 @@
 import Button from "./Button";
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
-import { ref, remove } from "firebase/database";
 import { db, storage } from "../lib/firebase";
+import { ref, remove } from "firebase/database";
+import { deleteObject, ref as rt_ref } from "firebase/storage";
 import Image from "next/image";
 import icon_correct from "../assets/images/icons/check.png";
 import icon_wrong from "../assets/images/icons/cross.png";
 import { allFolderNames } from "../lib/helperFunctions";
 import toast, { Toaster } from "react-hot-toast";
-import icon_delete_folder from "../assets/images/icons/delete-folder.png";
+import icon_delete_note from "../assets/images/icons/delete_note.png";
 
 // process images from url
 const myLoader = ({ src, width, quality }) => {
   return `${src}?w=${width}&q=${quality || 75}`;
 };
 
-export default function DeleteNoteFolder({
+export default function DeleteNote({
   path,
-  pathFileStorage,
   db_array,
-  folderName,
-  rootFolderName,
+  noteName,
+  pathFileStorage,
 }) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -30,7 +30,33 @@ export default function DeleteNoteFolder({
 
   function openModal() {
     setIsOpen(true);
-    folderNotes();
+  }
+
+  function deleteMarkdownInCloud() {
+    // Create a reference to the file to delete
+    const storageRef = rt_ref(
+      storage,
+      "notes_markdown/" + pathFileStorage + "/" + noteName + ".md"
+    );
+
+    // Delete the file
+    deleteObject(storageRef)
+      .then(() => {
+        // File deleted successfully
+        toast.success(
+          `The note "${noteName}" was successfully deleted to the "firebase file storage".`,
+          {
+            duration: 4000,
+          }
+        );
+      })
+      .catch((error) => {
+        // Uh-oh, an error occurred!
+        toast.error(`see console log for error: "${error}"`, {
+          duration: 4000,
+        });
+        console.log(error);
+      });
   }
 
   function deleteFolderDB(path) {
@@ -39,50 +65,24 @@ export default function DeleteNoteFolder({
       .then(() => {
         // Data saved successfully!
         toast.success(
-          `The folder "${folderName}", was successfully deleted fom the database.`,
+          `The note "${noteName}", was successfully deleted fom the database.`,
           {
             duration: 4000,
           }
         );
       })
       .catch((error) => {
-        // The write failed...
+        // The failed to delete ...
         toast.error(`see console log for error: "${error}"`, {
           duration: 4000,
         });
         console.log(error);
       });
+    // delete note in "firebase cloud file" storage
+    deleteMarkdownInCloud();
     // close the menu after
     closeModal();
   }
-
-  function folderNotes() {
-    let notes = [];
-    for (let i = 0; i < db_array.length; i++) {
-      if (rootFolderName == db_array[i][0]) {
-        // only from foot folder, add "notes" from root folder
-        if (db_array[i][1] && rootFolderName === folderName) {
-          db_array[i][1].forEach((item) => notes.push(item));
-        }
-        if (db_array[i][2]) {
-          for (let a = 0; a < db_array[i][2].length; a++) {
-            // only from root folder, add all "notes"
-            if (db_array[i][2][a][1] && rootFolderName === folderName) {
-              db_array[i][2][a][1].forEach((item) => notes.push(item));
-            }
-            // only from sub folder, add only "notes" from within the sub folder
-            if (db_array[i][2][a][1] && db_array[i][2][a][0] === folderName) {
-              db_array[i][2][a][1].forEach((item) => notes.push(item));
-            }
-          }
-        }
-      }
-    }
-    return notes.sort();
-  }
-
-  // list of notes which are contained within the folder
-  let noteList = folderNotes();
 
   return (
     <>
@@ -90,14 +90,14 @@ export default function DeleteNoteFolder({
 
       <Button
         title={""}
-        tip={`delete "${folderName}" and its notes`}
+        tip={`delete the note "${noteName}"`}
         padding="pl-1 pr-1 pb-0 pt-0"
         margin="m-1 mr-2"
         callBack={openModal}
         iconLeft={
           <Image
             loader={myLoader}
-            src={icon_delete_folder}
+            src={icon_delete_note}
             alt={`icon`}
             width={20}
             height={20}
@@ -141,11 +141,11 @@ export default function DeleteNoteFolder({
                     className="text-lg font-medium leading-6 text-gray-900 flex items-center justify-between"
                   >
                     <h3>
-                      Delete &#34;
+                      Delete the &#34;
                       <span className="underline decoration-double">
-                        {folderName}
+                        {noteName}
                       </span>
-                      &#34; folder.
+                      &#34; note.
                     </h3>
                     <Button
                       style={4}
@@ -156,14 +156,10 @@ export default function DeleteNoteFolder({
                     />
                   </Dialog.Title>
                   <hr className="text-neutral-300" />
-                  {noteList[0] && (
+                  {/* {noteList[0] && (
                     <>
                       <p className=" text-neutral-400 text-sm mt-4">
-                        You can <span className="font-black">NOT delete</span>{" "}
-                        the folder, because there are still note(s) inside.
-                        <br />
-                        Delete first manually every note in the folder &#34;
-                        {folderName}&#34;.
+                        Note: Deleting the following note(s):
                       </p>
                       <div className="text-center mb-4">
                         {noteList.map((note) => (
@@ -176,15 +172,13 @@ export default function DeleteNoteFolder({
                         ))}
                       </div>
                     </>
-                  )}
+                  )} */}
                   <hr className="text-neutral-300" />
                   <Button
-                    title="delete folder"
-                    tip={"Delete the folder and its content."}
+                    title="delete note"
+                    tip={"Delete the note."}
                     callBack={() => deleteFolderDB(path)}
                     style={5}
-                    // only allow to delete the folder if there are no notes contained within
-                    disable={noteList[0] ? true : false}
                   />
                 </Dialog.Panel>
               </Transition.Child>

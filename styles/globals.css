@@ -4,11 +4,103 @@
 @tailwind utilities;
 
 @layer components {
+  /* >>> form */
   .z-placeholder {
     @apply placeholder:text-neutral-300 placeholder:italic placeholder:text-sm;
   }
   .label-text {
     @apply text-xs tracking-[5px] text-neutral-400 block ml-1 uppercase;
+  }
+  /* >>> Markdown */
+  .markdown-container {
+    @apply bg-neutral-100 border-neutral-100 border-2 border-l-8 border-r-8  h-[744px] overflow-y-scroll;
+  }
+
+  .markdown-view ol > li {
+    @apply leading-6 list-decimal ml-6 font-font-sans text-neutral-700;
+  }
+
+  .markdown-view ol > li > ol > li {
+    @apply leading-6 list-[upper-alpha] ml-6 font-font-sans text-neutral-700;
+  }
+
+  .markdown-view ul > li {
+    @apply leading-6 list-disc ml-6 font-font-sans text-neutral-700;
+  }
+
+  .markdown-view ul > li > ul > li {
+    @apply leading-6 list-[square] ml-6 font-font-sans text-neutral-700;
+  }
+  .markdown-view ul > li > ul > li > ul > li {
+    @apply leading-6 list-[circle] ml-6 font-font-sans text-neutral-700;
+  }
+
+  .contains-task-list {
+    @apply leading-6 ml-6 list-none font-font-sans text-neutral-700 bg-primary-500;
+  }
+
+  .markdown-view blockquote {
+    @apply leading-6 font-font-sans text-neutral-700 border-l-4 border-neutral-300 pl-2 bg-indigo-100;
+  }
+
+  .markdown-view code {
+    @apply leading-6 font-font-mono text-neutral-700  bg-neutral-300 px-1 rounded-md font-medium;
+  }
+
+  .markdown-view em {
+    @apply leading-6 font-font-sans text-neutral-700 italic font-light;
+  }
+
+  .markdown-view a {
+    @apply leading-6 font-font-sans text-[#0969DA] cursor-pointer hover:underline;
+  }
+
+  .markdown-view hr {
+    @apply border-[1px] border-neutral-300 my-1;
+  }
+
+  .task-list-item {
+    @apply list-none bg-indigo-300;
+  }
+
+  .markdown-view h1 {
+    @apply leading-5 font-font-sans pb-2 mb-4 mt-2 text-3xl font-medium border-b-[1px] border-neutral-300 text-neutral-900;
+  }
+  .markdown-view h2 {
+    @apply leading-5 font-font-sans pb-1 mb-4 mt-6 text-2xl font-medium border-b-[1px] border-neutral-300 text-neutral-900;
+  }
+  .markdown-view h3 {
+    @apply leading-5 font-font-sans mb-4 mt-6 text-xl font-medium underline decoration-neutral-300 decoration-1 underline-offset-4 text-neutral-900;
+  }
+  .markdown-view h4 {
+    @apply leading-5 font-font-sans mb-4 mt-6 text-lg font-medium underline decoration-neutral-300 decoration-1 underline-offset-4 text-neutral-900;
+  }
+  .markdown-view h5 {
+    @apply leading-5 font-font-sans mb-4 mt-6 text-base font-medium underline decoration-neutral-300 decoration-1 underline-offset-4 text-neutral-900;
+  }
+  .markdown-view h6 {
+    @apply leading-5 font-font-sans mt-6 text-sm font-medium underline decoration-neutral-300 decoration-1 underline-offset-4 text-neutral-900;
+  }
+  .markdown-view p {
+    @apply leading-6 font-font-sans text-neutral-700;
+  }
+
+  /* table */
+  .markdown-view table {
+    @apply border-collapse  m-1 shadow-lg;
+  }
+  .markdown-view th {
+    @apply border border-neutral-300 px-2 bg-neutral-200 text-neutral-600;
+  }
+  .markdown-view td {
+    @apply border border-neutral-300 px-2 text-neutral-600 text-sm;
+  }
+  .markdown-view tbody > tr {
+    @apply odd:bg-indigo-100;
+  }
+  /* image */
+  .markdown-view img {
+    @apply shadow-md m-1 mb-2;
   }
 }
 
