@@ -40,7 +40,7 @@
   }
 
   .markdown-view blockquote {
-    @apply leading-6 font-font-sans text-neutral-700 border-l-4 border-neutral-300 pl-2 bg-indigo-100;
+    @apply leading-6 font-font-sans text-neutral-700 border-l-4 border-neutral-300 pl-2 bg-indigo-100 inline-block pr-2;
   }
 
   .markdown-view code {
@@ -64,16 +64,16 @@
   }
 
   .markdown-view h1 {
-    @apply leading-5 font-font-sans pb-2 mb-4 mt-2 text-3xl font-medium border-b-[1px] border-neutral-300 text-neutral-900;
+    @apply leading-5 font-font-sans pb-2 mb-4 mt-2 text-xl sm:text-3xl font-medium border-b-[1px] border-neutral-300 text-neutral-900;
   }
   .markdown-view h2 {
-    @apply leading-5 font-font-sans pb-1 mb-4 mt-6 text-2xl font-medium border-b-[1px] border-neutral-300 text-neutral-900;
+    @apply leading-5 font-font-sans pb-1 mb-4 mt-6 text-lg sm:text-2xl font-medium border-b-[1px] border-neutral-300 text-neutral-900;
   }
   .markdown-view h3 {
-    @apply leading-5 font-font-sans mb-4 mt-6 text-xl font-medium underline decoration-neutral-300 decoration-1 underline-offset-4 text-neutral-900;
+    @apply leading-5 font-font-sans mb-4 mt-6 text-base sm:text-xl font-medium underline decoration-neutral-300 decoration-1 underline-offset-4 text-neutral-900;
   }
   .markdown-view h4 {
-    @apply leading-5 font-font-sans mb-4 mt-6 text-lg font-medium underline decoration-neutral-300 decoration-1 underline-offset-4 text-neutral-900;
+    @apply leading-5 font-font-sans mb-4 mt-6 text-base font-medium underline decoration-neutral-300 decoration-1 underline-offset-4 text-neutral-900;
   }
   .markdown-view h5 {
     @apply leading-5 font-font-sans mb-4 mt-6 text-base font-medium underline decoration-neutral-300 decoration-1 underline-offset-4 text-neutral-900;

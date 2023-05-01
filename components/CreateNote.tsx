@@ -15,7 +15,8 @@ import icon_create_note from "../assets/images/icons/create_file.png";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { dark, okaidia } from "react-syntax-highlighter/dist/esm/styles/prism";
+// import is corrupt? error export "unknown token"
+// import { dark, okaidia } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 // process images from url
 const myLoader = ({ src, width, quality }) => {
@@ -32,7 +33,7 @@ export default function CreateNote({
 
   const [noteName, setNoteName] = useState("");
   const [description, setDescription] = useState("");
-  const [hero, setHero] = useState("https://picsum.photos/200/300");
+  const [hero, setHero] = useState("https://picsum.photos/200");
   const [author, setAuthor] = useState("");
   const [markdownText, setMarkdownText] = useState("");
 
@@ -68,8 +69,8 @@ export default function CreateNote({
     setAuthor("");
     // set description back to an empty sting when Modal opens
     setDescription("");
-    // set path to image icon back to an empty sting when Modal opens
-    setHero("");
+    // set markdown text back to an empty sting when Modal opens
+    setMarkdownText("");
     // set empty sting check back to false which can be true from the
     // previous value
     setCheck_empty(false);
@@ -115,8 +116,6 @@ export default function CreateNote({
     }
     if (hero) {
       metaText = metaText.concat(`hero_image: ${hero}\n`);
-    } else {
-      metaText = metaText.concat(`hero_image: https://picsum.photos/200/300\n`);
     }
     if (created) {
       metaText = metaText.concat(`created: ${created}\n`);
@@ -132,11 +131,13 @@ export default function CreateNote({
       const spacesCount = markdownText.split(" ").length - 1;
       metaText = metaText.concat(`words: ${spacesCount}\n`);
       words = spacesCount;
-      const min = Math.trunc(spacesCount / 200);
+      let min = Math.trunc(spacesCount / 200);
+      let minStr = min.toString();
       let sec = (((spacesCount / 200) % 1) * 0.6).toFixed(2);
       let secNum = parseFloat(sec) * 100;
-      metaText = metaText.concat(`timeToRead: ${min}:${secNum}\n`);
-      timeToRead = `${min}:${secNum}`;
+      let secStr = secNum.toString();
+      metaText = metaText.concat(`timeToRead: ${minStr}:${secStr}\n`);
+      timeToRead = `${minStr}:${secStr}`;
     }
     metaText = metaText.concat(`---\n`);
     metaText = metaText.concat(markdownText);
@@ -503,7 +504,6 @@ export default function CreateNote({
                               },
                             }}
                           />
-                          ,
                         </div>
                       </div>
                     </div>

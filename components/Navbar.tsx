@@ -76,7 +76,7 @@ export default function Navbar() {
   });
   return (
     <>
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center mb-6">
         {/* hamburger icon */}
         <div
           className="cursor-pointer bg-primary-200  dark:bg-primary-1000 h-10 pr-4 rounded-r-full mt-0.5 flex items-center shadow-md group"
