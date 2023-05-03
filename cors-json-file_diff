@@ -1,0 +1,13 @@
+[
+  {
+    "origin": ["https://zoltankepes.com", "http://localhost:3000" , "https://zoltankepes-com.vercel.app"],
+    "method": ["GET"],
+    "maxAgeSeconds": 3600
+  }
+]
+
+[{"maxAgeSeconds": 3600, "method": ["GET"], "origin": ["https://zoltankepes.com", "http://localhost:3000", "https://zoltankepes-com.vercel.app"]}]
+
+https://www.zoltankepes.com
+
+https://zoltankepes-com.vercel.app/notes/Python/Django/markdown%20layout%20test

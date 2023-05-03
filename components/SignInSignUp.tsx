@@ -55,7 +55,7 @@ export default function SignInSignUp() {
           type="button"
           onClick={openModal}
           title="login or sign up"
-          className="cursor-pointer bg-primary-200 h-10 w-[52px] pl-4 rounded-l-full mt-0.5 flex items-center shadow-md  dark:bg-primary-1000"
+          className="cursor-pointer bg-indigo-200 h-10 w-[52px] pl-4 rounded-l-full mt-0.5 flex items-center shadow-md  dark:bg-primary-1000"
         >
           <IconContext.Provider
             value={{
@@ -71,7 +71,7 @@ export default function SignInSignUp() {
           type="button"
           onClick={logout}
           title="logout"
-          className="cursor-pointer bg-primary-200 h-10 w-[52px] pl-4 rounded-l-full mt-0.5 flex items-center shadow-md  dark:bg-primary-1000"
+          className="cursor-pointer bg-indigo-200 h-10 w-[52px] pl-4 rounded-l-full mt-0.5 flex items-center shadow-md  dark:bg-primary-1000"
         >
           <IconContext.Provider
             value={{

@@ -1,6 +1,6 @@
 [
   {
-    "origin": ["https://zoltankepes.com", "http://localhost:3000" , "https://zoltankepes-com.vercel.app"],
+    "origin": ["https://zoltankepes.com", "https://www.zoltankepes.com", "http://localhost:3000" , "https://zoltankepes-com.vercel.app"],
     "method": ["GET"],
     "maxAgeSeconds": 3600
   }

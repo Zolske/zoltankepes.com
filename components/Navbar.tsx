@@ -79,7 +79,7 @@ export default function Navbar() {
       <div className="flex justify-between items-center mb-6">
         {/* hamburger icon */}
         <div
-          className="cursor-pointer bg-primary-200  dark:bg-primary-1000 h-10 pr-4 rounded-r-full mt-0.5 flex items-center shadow-md group"
+          className="cursor-pointer bg-indigo-200  dark:bg-primary-1000 h-10 pr-4 rounded-r-full mt-0.5 flex items-center shadow-md group"
           onClick={handleClickMenu}
           title="menu"
         >
@@ -101,7 +101,7 @@ export default function Navbar() {
         <Link href="/">
           {/* no logged in user or data */}
           {!userData && (
-            <header className="flex items-center bg-primary-200 h-12 mt-0 rounded-b-3xl shadow-md pl-2 pr-2">
+            <header className="flex items-center bg-indigo-200 h-12 mt-0 rounded-b-3xl shadow-md pl-2 pr-2">
               {/* laptop icon */}
               <Image
                 src={logo_title}
@@ -119,7 +119,7 @@ export default function Navbar() {
           )}
           {/* logged in user and data */}
           {userData && (
-            <header className="flex items-center bg-primary-200 h-20 mt-0 rounded-b-3xl shadow-md pl-2 pr-2">
+            <header className="flex items-center bg-indigo-200 h-20 mt-0 rounded-b-3xl shadow-md pl-2 pr-2">
               {/* laptop icon */}
               <Image
                 src={logo_title}
