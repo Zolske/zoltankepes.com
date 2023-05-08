@@ -1,10 +1,14 @@
 import Head from "next/head";
 import Image from "next/image";
 import { Inter } from "next/font/google";
+import { LoggedUserContext } from "../lib/Contexts";
+import { useContext } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
+  const LoggedUserData = useContext(LoggedUserContext);
+
   return (
     <>
       <Head>
@@ -19,6 +23,9 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <h1>Home</h1>
+      {LoggedUserData?.adminMarkdownNote && (
+        <p>is admin : {typeof LoggedUserData.adminMarkdownNote}</p>
+      )}
     </>
   );
 }
