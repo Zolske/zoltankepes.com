@@ -259,8 +259,7 @@ export default function CreateNote({
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900 flex items-center justify-between"
                   >
-                    <h3>Create a note under &#34;{pathFileStorage}&#34;.</h3>
-
+                    Create a note under &#34;{pathFileStorage}&#34;.
                     <Button
                       style={4}
                       title={"close"}

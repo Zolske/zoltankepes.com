@@ -57,6 +57,21 @@ export default function SubNote() {
   // console.log(slug ? slug[0] : "wait");
   // const slug = (router.query.slug as string[]) || []
 
+  /**
+   * Convert number to string if input is a number.
+   * E.g. 197 is converted to 3:17 if 197 is a number.
+   * @param number
+   * @returns
+   */
+  function convert_timeToRead(number) {
+    if (typeof number === "number") {
+      let seconds = (number % 60).toString();
+      let minutes = parseInt((number / 60).toString()).toString();
+      return `${minutes}:${seconds}`;
+    }
+    return number;
+  }
+
   useEffect(() => {
     setLoading(true);
     if (slug) {
@@ -80,6 +95,12 @@ export default function SubNote() {
                   //   ? console.log(`data : ${data.data["title"]}`)
                   //   : false;
                   // console.log(`content : ${data.content}`);
+                  // convert the number from the matter function to the correct format
+                  if (data.data.timeToRead) {
+                    data.data.timeToRead = convert_timeToRead(
+                      data.data.timeToRead
+                    );
+                  }
                   console.log("I am still running");
                 });
               });
