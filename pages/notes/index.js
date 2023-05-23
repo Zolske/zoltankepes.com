@@ -491,6 +491,20 @@ export default function Notes() {
                                           }
                                           noteName={link}
                                         />
+                                        <UpdateNote
+                                          path={
+                                            folder[0] +
+                                            "/SubFolder/" +
+                                            subfolder[0] +
+                                            "/Notes/" +
+                                            link
+                                          }
+                                          db_array={db_array.current}
+                                          noteName={link}
+                                          pathFileStorage={
+                                            folder[0] + "/" + subfolder[0]
+                                          }
+                                        />
                                       </div>
                                     )}
                                   </li>
