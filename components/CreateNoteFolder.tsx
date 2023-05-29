@@ -129,6 +129,9 @@ export default function CreateNoteFolder({ db_json, parent_name = "" }) {
           title="create folder"
           tip={"Create a new folder for notes."}
           callBack={openModal}
+          style={3}
+          // bg={"indigo-400"}
+          text_color="[#000]"
         />
       )}
       {parent_name && (

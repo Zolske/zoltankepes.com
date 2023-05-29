@@ -299,18 +299,31 @@ export default function UpdateNote({
                     />
                   </Dialog.Title>
                   <hr className="text-neutral-300" />
-                  <details open>
+                  <details>
                     <summary>Meta Data</summary>
                     <div className="email-input mt-4 mb-4">
+                      {/* note author */}
+                      <label htmlFor="author" className="label-text">
+                        author:
+                      </label>
+                      <input
+                        name="author"
+                        placeholder=" name of the author"
+                        type="text"
+                        onChange={(e) => setMetaAuthor(e.target.value)}
+                        value={metaAuthor}
+                        autoComplete="true"
+                        className="border-2 rounded-sm border-neutral-100 shadow-inner z-placeholder mb-3 w-full"
+                      />
                       {/* >>> note description */}
-                      {/* <label htmlFor="description" className="label-text">
+                      <label htmlFor="description" className="label-text">
                         description:
                       </label>
                       <textarea
                         name="description"
                         placeholder=" describe what the note is about"
-                        onChange={(e) => setDescription(e.target.value)}
-                        value={description}
+                        onChange={(e) => setMetaDescription(e.target.value)}
+                        value={metaDescription}
                         required
                         autoComplete="true"
                         className="border-2 rounded-sm border-neutral-100 shadow-inner z-placeholder mb-3 w-full"
@@ -324,11 +337,11 @@ export default function UpdateNote({
                         name="hero"
                         placeholder=" https://picsum.photos/200/300"
                         type="text"
-                        onChange={(e) => setHero(e.target.value)}
-                        value={hero}
+                        onChange={(e) => setMetaHero(e.target.value)}
+                        value={metaHero}
                         autoComplete="true"
                         className="border-2 rounded-sm border-neutral-100 shadow-inner z-placeholder mb-3 w-full"
-                      /> */}
+                      />
                     </div>
                   </details>
                   <hr className="text-neutral-300" />

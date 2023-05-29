@@ -14,7 +14,8 @@ import {
 import Image from "next/image";
 import matter from "gray-matter";
 // import { bali_Ref } from "../../assets/images/background/paper_background.webp";
-import bg_paper from "../../assets/images/background/paper_background.webp";
+// import bg_paper from "../../assets/images/background/paper_background.webp";
+import bg_paper from "../../assets/images/background/paper_lines_background.webp";
 import image_pin from "../../assets/images/background/pin.webp";
 import { storage, fs_ref } from "../../lib/firebase";
 import { useEffect, useState } from "react";
@@ -172,7 +173,8 @@ export default function SubNote() {
               <span className="text-right col-span-3 md:col-span-1 text-logo-blue text-xs self-end mb-2 z-10">
                 note :
               </span>
-              <h1 className="col-span-9 md:col-span-6 md:text-center z-10 ml-2 font-audiowide text-xl sm:text-3xl md:text-4xl text-logo-red my-1">
+              {/* <h1 className="col-span-9 md:col-span-6 md:text-center z-10 ml-2 font-audiowide text-xl sm:text-3xl md:text-4xl text-logo-red my-1"> */}
+              <h1 className="col-span-9 md:col-span-6 md:text-center z-10 ml-2 font-audiowide text-xl sm:text-3xl md:text-4xl rainbow-head opacity-100 my-1">
                 <div className="bg-primary-100/20 px-1 rounded-xl inline-block">
                   {data.data.title}
                 </div>

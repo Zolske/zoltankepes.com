@@ -1,4 +1,5 @@
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import { LoggedUserContext } from "../lib/Contexts";
 import { useState, useRef, useEffect } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -33,7 +34,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <Navbar />
         {/* <main>{children}</main> */}
         {children}
-        <footer>{/* <p>This is an example footer!</p> */}</footer>
+        <Footer />
       </LoggedUserContext.Provider>
     </div>
   );

@@ -104,4 +104,17 @@
   }
 }
 
+/*>>> regular styles */
+h1 {
+  @apply sm:text-2xl lg:text-4xl font-audiowide sm:tracking-widest;
+}
+
+/* needs to be a span */
+.rainbow-head {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-primary-700 to-indigo-500;
+}
+
+.rainbow-head-2 {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-primary-700;
+}
 /*<<< end <<<  tailwind */

@@ -101,13 +101,13 @@ export default function Navbar() {
         <Link href="/">
           {/* no logged in user or data */}
           {!userData && (
-            <header className="flex items-center bg-indigo-200 h-12 mt-0 rounded-b-3xl shadow-md pl-2 pr-2">
+            <header className="flex items-center bg-indigo-200 h-fit mt-0 rounded-b-3xl shadow-md pl-2 pr-2">
               {/* laptop icon */}
               <Image
                 src={logo_title}
-                alt="laptop drawn with a black pan"
+                alt="laptop drawn with a blue pan"
                 priority
-                className="w-10 h-10 inline"
+                className="w-10 h-10 inline sm:w-20 sm:h-20"
               />
               {/* website title */}
               <h1 className="inline font-audiowide text-xl">
@@ -123,9 +123,9 @@ export default function Navbar() {
               {/* laptop icon */}
               <Image
                 src={logo_title}
-                alt="laptop drawn with a black pan"
+                alt="laptop drawn with a blue pan"
                 priority
-                className="w-10 h-10 inline"
+                className="w-10 h-10 inline sm:w-20 sm:h-20"
               />
               {/* website title */}
               <div className="flex flex-col items-center m-1">
@@ -141,12 +141,12 @@ export default function Navbar() {
               </div>
               {userData.image && (
                 <Image
-                  className=" rounded-full w-10 h-10 inline"
+                  className=" rounded-full w-10 h-10 inline sm:w-16 sm:h-16"
                   // loader={myLoader}
                   src={userData.image}
                   alt={`user image`}
-                  width={40}
-                  height={40}
+                  width={64}
+                  height={64}
                 />
               )}
             </header>

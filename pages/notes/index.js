@@ -66,9 +66,7 @@ const myLoader = ({ src, width, quality }) => {
 export default function Notes() {
   // message shown to the user for the time the data is loading
   const [waitData, setWaitData] = useState("wait for data to be loaded");
-  const [description, setDescription] = useState(
-    "Move the mouse over the folder or file to see its description."
-  );
+  const [description, setDescription] = useState(false);
   const [author, setAuthor] = useState(false);
   const [created, setCreated] = useState(false);
   const [updated, setUpdated] = useState(false);
@@ -169,22 +167,37 @@ export default function Notes() {
   }
 
   return (
-    <>
+    <main className="h-screen mx-2 sm:m-auto">
+      <h1 className="ml-2 text-center">
+        <span className="rainbow-head">Zoltan&apos;s notes</span>
+      </h1>
+      <p className="mb-2 text-center max-w-3xl m-auto">
+        <span className="rainbow-head-2 italic font-medium text-lg">
+          The folders which contain my notes are listed in the orange box below.
+          Click on the folder and see the content. The notes are marked with the{" "}
+          <Image
+            loader={myLoader}
+            src={icon_file}
+            alt={`note icon`}
+            width={20}
+            height={20}
+            className="inline-block mr-1"
+          />
+          icon and can be opened by clicking on it. You can read a short
+          description of the folder or file in the blue box below.
+        </span>
+      </p>
       {/* <Button callBack={console.log(db_json.current)} title="log json" />
       <Button
         callBack={() => console.log(db_array.current)}
         title="log array"
       /> */}
-      {/* only show if adminMarkdownNote is true */}
-      {LoggedUserData?.adminMarkdownNote && (
-        <CreateNoteFolder db_json={db_json.current} />
-      )}
-      {!db_json.current && !db_array.current && <h1>{waitData}</h1>}
+      {!db_json.current && !db_array.current && <span>{waitData}</span>}
       {db_array.current && (
         // grid container for folder and description
         <div className="md:grid md:grid-cols-12 gap-2 mx-2 relative">
           {/* description grid item */}
-          <div className="md:col-span-6 bg-indigo-400 py-2 hidden md:inline-block sticky top-0 h-fit">
+          <div className="md:col-span-6 bg-indigo-400 py-2 hidden md:inline-block sticky top-0 h-fit min-h-[400px]">
             {/* title */}
             {title && (
               <div className="text-center">
@@ -202,9 +215,9 @@ export default function Notes() {
                 <h3 className="text-center inline font-audiowide text-neutral-900">
                   {title}
                 </h3>
+                <hr className="text-neutral-600 mx-8"></hr>
               </div>
             )}
-            <hr className="text-neutral-600 mx-8"></hr>
             {/* author or created or updated */}
             {(author || updated || created) && (
               <div className="flex justify-around">
@@ -270,15 +283,37 @@ export default function Notes() {
               <hr className="text-neutral-600 mx-8"></hr>
             )}
             {/* description */}
-            <h3 className="mt-2 text-center tracking-[8px] text-neutral-700">
-              Description
-            </h3>
-            <p className="text-center italic text-neutral-800 mx-1">
-              {description}
-            </p>
+            {description && (
+              <>
+                <h3 className="mt-2 text-center tracking-[8px] text-neutral-700">
+                  Description
+                </h3>
+                <p className="text-center italic text-neutral-800 mx-1">
+                  {description}
+                </p>
+              </>
+            )}
+            {/* if no content */}
+            {!author &&
+              !created &&
+              !updated &&
+              !minToRead &&
+              !words &&
+              !icon &&
+              !title &&
+              !description && (
+                <p className="text-center italic">
+                  Hover over the folder or notes &#40;which are listed on the
+                  right side&#41; to see information about them in this field.
+                </p>
+              )}
           </div>
           {/* folder grid item */}
           <div className="bg-primary-500 md:col-span-6 pl-4 pt-2">
+            {/* only show if adminMarkdownNote is true */}
+            {LoggedUserData?.adminMarkdownNote && (
+              <CreateNoteFolder db_json={db_json.current} />
+            )}
             {db_array.current.map((folder) => (
               <div key={folder[0]}>
                 {/* folder from the root of the database */}
@@ -520,6 +555,6 @@ export default function Notes() {
           </div>
         </div>
       )}
-    </>
+    </main>
   );
 }
