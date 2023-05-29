@@ -1,7 +1,9 @@
 import {
   AuthErrorCodes,
   getAuth,
+  setPersistence,
   signInWithEmailAndPassword,
+  browserSessionPersistence,
   GoogleAuthProvider,
   signInWithPopup,
   GithubAuthProvider,
@@ -21,12 +23,15 @@ export default function Login() {
   // initialised auth instance
   const auth = getAuth(firebaseApp);
 
+  let email;
+  let password;
+
   // handle form submit
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     setError("");
-    let email = input.email.toLowerCase().trim();
-    let password = input.password;
+    email = input.email.toLowerCase().trim();
+    password = input.password;
 
     // sign in user
     signInWithEmailAndPassword(auth, email, password)
@@ -86,6 +91,22 @@ export default function Login() {
         console.log(error.code);
       });
   };
+
+  // sign user out if tab or window is closed
+  setPersistence(auth, browserSessionPersistence)
+    .then(() => {
+      // Existing and future Auth states are now persisted in the current
+      // session only. Closing the window would clear any existing state even
+      // if a user forgets to sign out.
+      // ...
+      // New sign-in will be persisted with session persistence.
+      return signInWithEmailAndPassword(auth, email, password);
+    })
+    .catch((error) => {
+      // Handle Errors here.
+      const errorCode = error.code;
+      const errorMessage = error.message;
+    });
 
   return (
     <div className="form-body">
