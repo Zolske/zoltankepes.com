@@ -9,6 +9,7 @@ import { rt_db_json_ref } from "../../lib/firebase";
 import { useState, useEffect, useRef } from "react";
 import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 import CreateNoteFolder from "../../components/CreateNoteFolder";
+import UpdateNoteFolder from "../../components/UpdateNoteFolder";
 import DeleteNoteFolder from "../../components/DeleteNoteFolder";
 import CreateNote from "../../components/CreateNote";
 import UpdateNote from "../../components/UpdateNote";
@@ -74,12 +75,15 @@ export default function Notes() {
   const [words, setWords] = useState(false);
   const [icon, setIcon] = useState(false);
   const [title, setTitle] = useState(false);
+  // user data
+  // const [userData, setUserData] = useState(false);
 
   // use the "LoggedUserContext" to see user data which is defined when user logs-in in "Layout.tsx"
   const LoggedUserData = useContext(LoggedUserContext);
 
   let db_json = useRef(false);
   let db_array = useRef(false);
+  let userData = useRef(false);
 
   useEffect(() => {
     onValue(rt_db_json_ref, (snapshot) => {
@@ -166,6 +170,18 @@ export default function Notes() {
     return firstNotes.concat(secondNotes);
   }
 
+  // get logged-in user data
+  const auth = getAuth();
+
+  onAuthStateChanged(auth, (user) => {
+    if (user && !userData.current) {
+      // setUserData({ name: user.displayName, image: user.photoURL });
+      userData.current = { name: user.displayName, image: user.photoURL };
+    } else if (!user) {
+      setUserData(false);
+    }
+  });
+
   return (
     <main className="h-screen mx-2 sm:m-auto">
       <h1 className="ml-2 text-center">
@@ -187,8 +203,12 @@ export default function Notes() {
           description of the folder or file in the blue box below.
         </span>
       </p>
-      {/* <Button callBack={console.log(db_json.current)} title="log json" />
-      <Button
+      {/* <Button callBack={console.log(db_json.current)} title="log json" /> */}
+      {/* <Button
+        callBack={console.log(db_json.current.Python.SubFolder.Django)}
+        title="log json Django"
+      /> */}
+      {/* <Button
         callBack={() => console.log(db_array.current)}
         title="log array"
       /> */}
@@ -347,6 +367,11 @@ export default function Notes() {
                             db_json={db_json.current}
                             parent_name={folder[0]}
                           />
+                          <UpdateNoteFolder
+                            db_json={db_json.current}
+                            db_json_folder={db_json.current[folder[0]]}
+                            nameOfFolder={folder[0]}
+                          />
                           <DeleteNoteFolder
                             path={folder[0]}
                             db_array={db_array.current}
@@ -359,6 +384,7 @@ export default function Notes() {
                             pathFileStorage={folder[0]}
                             db_json={db_json.current}
                             folderName={folder[0]}
+                            userData={userData.current}
                           />
                         </div>
                       )}
@@ -452,6 +478,16 @@ export default function Notes() {
                               {/* only show if adminMarkdownNote is true */}
                               {LoggedUserData?.adminMarkdownNote && (
                                 <div className="invisible group-hover:visible inline">
+                                  <UpdateNoteFolder
+                                    db_json={db_json.current}
+                                    db_json_folder={
+                                      db_json.current[folder[0]]["SubFolder"][
+                                        subfolder[0]
+                                      ]
+                                    }
+                                    nameOfFolder={subfolder[0]}
+                                    rootFolderName={folder[0]}
+                                  />
                                   <DeleteNoteFolder
                                     path={
                                       folder[0] + "/SubFolder/" + subfolder[0]
@@ -475,6 +511,7 @@ export default function Notes() {
                                     }
                                     db_json={db_json.current}
                                     folderName={subfolder[0]}
+                                    userData={userData.current}
                                   />
                                 </div>
                               )}

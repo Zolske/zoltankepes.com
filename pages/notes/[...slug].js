@@ -23,6 +23,7 @@ import Button from "../../components/Button";
 import { TbFileDownload } from "react-icons/tb";
 import { GoMarkdown } from "react-icons/go";
 import { IconContext } from "react-icons";
+import { handleHeadingId } from "@/lib/helperFunctions";
 
 // export async function getStaticProps(context) {
 //   // get and save the url link to the markdown document in firebase
@@ -92,9 +93,9 @@ export default function SubNote() {
                   data.data
                     ? setLoading(false)
                     : console.log("loading data ...");
-                  // data.data
-                  //   ? console.log(`data : ${data.data["title"]}`)
-                  //   : false;
+                  data.data
+                    ? console.log(`data : ${data.data.author_image}`)
+                    : false;
                   // console.log(`content : ${data.content}`);
                   // convert the number from the matter function to the correct format
                   if (data.data.timeToRead) {
@@ -121,11 +122,17 @@ export default function SubNote() {
    * @returns markdown ref if 2 or 3 slugs after "notes" otherwise false
    */
   function markdownRef(slug) {
+    // if (slug.length === 2) {
+    //   return ref(storage, `notes_markdown/${slug[0]}/${slug[1]}.md`);
+    // }
+    // if (slug.length === 3) {
+    //   return ref(storage, `notes_markdown/${slug[0]}/${slug[1]}/${slug[2]}.md`);
+    // }
     if (slug.length === 2) {
-      return ref(storage, `notes_markdown/${slug[0]}/${slug[1]}.md`);
+      return ref(storage, `notes_markdown/${slug[1]}.md`);
     }
     if (slug.length === 3) {
-      return ref(storage, `notes_markdown/${slug[0]}/${slug[1]}/${slug[2]}.md`);
+      return ref(storage, `notes_markdown/${slug[2]}.md`);
     }
     return false;
   }
@@ -142,6 +149,9 @@ export default function SubNote() {
     link.click();
     URL.revokeObjectURL(link.href);
   }
+
+  // adds id tags to all headings
+  handleHeadingId();
 
   return (
     <>
@@ -206,7 +216,7 @@ export default function SubNote() {
                     author :
                   </span>
                   {/* <div className="col-start-4 col-end-13 sm:col-end-10 flex items-baseline font-audiowide text-sm self-end"> */}
-                  <div className="col-start-4 col-end-13 sm:col-end-10 sm:text-center md:col-end-13 font-audiowide text-sm self-end">
+                  <div className="col-start-4 col-end-13 sm:col-end-10 sm:text-center md:col-end-13 font-audiowide text-sm self-end relative">
                     {data.data.author_image && (
                       // author image if exists
                       <Image
@@ -214,7 +224,7 @@ export default function SubNote() {
                         alt={`image of the author ${data.data.author}`}
                         width={25}
                         height={25}
-                        className="rounded-full my-1 ml-2 mr-2 inline-block"
+                        className="rounded-full my-1 ml-2 mr-2 inline-block z-20"
                       />
                     )}
                     <span className="ml-2 opacity-70 bg-primary-100/20 px-1 rounded-xl">
@@ -336,7 +346,7 @@ export default function SubNote() {
             // eslint-disable-next-line react/no-children-prop
             children={data.content}
             remarkPlugins={[remarkGfm]}
-            className="markdown-view p-2"
+            className="markdown-view js-md p-2"
             components={{
               code({ node, inline, className, children, ...props }) {
                 const match = /language-(\w+)/.exec(className || "");

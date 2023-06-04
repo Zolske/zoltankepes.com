@@ -33,11 +33,12 @@ export default function DeleteNote({
   }
 
   function deleteMarkdownInCloud() {
+    // const storageRef = rt_ref(
+    //   storage,
+    //   "notes_markdown/" + pathFileStorage + "/" + noteName + ".md"
+    // );
     // Create a reference to the file to delete
-    const storageRef = rt_ref(
-      storage,
-      "notes_markdown/" + pathFileStorage + "/" + noteName + ".md"
-    );
+    const storageRef = rt_ref(storage, "notes_markdown/" + noteName + ".md");
 
     // Delete the file
     deleteObject(storageRef)

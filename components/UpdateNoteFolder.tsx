@@ -2,24 +2,31 @@ import Button from "./Button";
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import { db } from "../lib/firebase";
-import { ref, set } from "firebase/database";
+import { ref, set, push, child, update, remove } from "firebase/database";
 import Image from "next/image";
 import icon_correct from "../assets/images/icons/check.png";
 import icon_wrong from "../assets/images/icons/cross.png";
 import { allFolderNames } from "../lib/helperFunctions";
 import toast, { Toaster } from "react-hot-toast";
-import icon_create_folder from "../assets/images/icons/subfolder.png";
+import icon_update_folder from "../assets/images/icons/update_folder.png";
 
 // process images from url
 const myLoader = ({ src, width, quality }) => {
   return `${src}?w=${width}&q=${quality || 75}`;
 };
 
-export default function CreateNoteFolder({ db_json, parent_name = "" }) {
+export default function UpdateNoteFolder({
+  db_json,
+  db_json_folder,
+  nameOfFolder,
+  rootFolderName = "",
+}) {
   const [isOpen, setIsOpen] = useState(false);
 
   const [folderName, setFolderName] = useState("");
-  const [description, setDescription] = useState("");
+  const [description, setDescription] = useState(
+    db_json_folder?.MetaData.description
+  );
   const [icon, setIcon] = useState("");
 
   const [check_empty, setCheck_empty] = useState(false);
@@ -44,23 +51,20 @@ export default function CreateNoteFolder({ db_json, parent_name = "" }) {
     // create array with all folder names from json
     setNamesListFolder(allFolderNames(db_json).sort());
     // set folderName back to an empty sting when Modal opens
-    setFolderName("");
+    setFolderName(nameOfFolder);
     // set description back to an empty sting when Modal opens
-    setDescription("");
+    setDescription(db_json_folder?.MetaData.description);
     // set path to image icon back to an empty sting when Modal opens
-    setIcon("");
+    setIcon(db_json_folder?.MetaData.icon);
     // set empty sting check back to false which can be true from the
     // previous value
     setCheck_empty(false);
+    // set initial folder name to the parent name == folder name
+    checkFolderName(nameOfFolder);
+    console.log(`json title :${db_json_folder.MetaData.title}
+    json icon :${db_json_folder.MetaData.icon}
+    json description :${db_json_folder.MetaData.description}`);
   }
-
-  // const handleChange = (e: { target: { name: any; value: any } }) => {
-  //   setInput((prevState) => ({
-  //     ...prevState,
-  //     [e.target.name]: e.target.value,
-  //   }));
-  //   console.log(input.icon);
-  // };
 
   function checkFolderName(name) {
     // set folder name, is also used to update output field
@@ -79,27 +83,46 @@ export default function CreateNoteFolder({ db_json, parent_name = "" }) {
     setCheck_sbleft(name.search(/\[/) === -1 ? true : false);
     // check if string contains "]"
     setCheck_sbright(name.search(/\]/) === -1 ? true : false);
-    // check if a folder already exist with the same name in upper and lower case
-    setCheck_name(
-      !namesListFolder.map((x) => x.toLowerCase()).includes(name.toLowerCase())
-    );
+    // check if a folder already exist with the same name in upper and lower case unless
+    // if the original name already exists, that is fine
+    if (nameOfFolder === name) {
+      setCheck_name(true);
+    } else {
+      setCheck_name(
+        !namesListFolder
+          .map((x) => x.toLowerCase())
+          .includes(name.toLowerCase())
+      );
+    }
   }
 
-  function createFolderDB(parent_name = "") {
-    parent_name = parent_name ? parent_name + "/SubFolder/" : "";
-    // set(ref(db, "markdown_note_index/" + parent_name + folderName), {
-    set(ref(db, `markdown_note_index/${parent_name}/${folderName}`), {
-      MetaData: {
-        description: description,
-        icon: icon,
-        title: folderName,
-      },
+  function createFolderDB(nameOfFolder) {
+    // check if the folder is nested within another folder
+    let realTimeDBPath;
+    // if rootFolder is false, then the name of the folder is already a root folder
+    if (!rootFolderName) {
+      realTimeDBPath = `markdown_note_index/`;
+      // if rootFolder is true, then the name of the folder is nested within another folder
+    } else if (rootFolderName) {
+      realTimeDBPath = `markdown_note_index/${rootFolderName}/SubFolder/`;
+    }
+
+    // if the original name of the folder and the new foldername are not the same
+    if (nameOfFolder != folderName) {
+      set(ref(db, `${realTimeDBPath}${folderName}`), db_json_folder);
+      remove(ref(db, `${realTimeDBPath}${nameOfFolder}`));
+    }
+
+    set(ref(db, `${realTimeDBPath}${folderName}/MetaData`), {
+      description: description,
+      icon: icon,
+      title: folderName,
     })
       .then(() => {
         // Data saved successfully!
-        if (parent_name) {
+        if (rootFolderName) {
           toast.success(
-            `The folder "${folderName}" was successfully created under "${parent_name}".`,
+            `The folder "${folderName}" was successfully created under "${rootFolderName}".`,
             { duration: 4000 }
           );
         } else {
@@ -124,27 +147,27 @@ export default function CreateNoteFolder({ db_json, parent_name = "" }) {
   return (
     <>
       <Toaster />
-      {!parent_name && (
+      {!nameOfFolder && (
         <Button
-          title="create folder"
-          tip={"Create a new folder for notes."}
+          title="update folder"
+          tip={"Update the folder for notes."}
           callBack={openModal}
           style={3}
           // bg={"indigo-400"}
           text_color="[#000]"
         />
       )}
-      {parent_name && (
+      {nameOfFolder && (
         <Button
           title=""
-          tip={`create a new subfolder for "${parent_name}"`}
+          tip={`update the "${nameOfFolder}" folder`}
           padding="pl-1 pr-1 pb-0 pt-0"
           margin="m-1"
           callBack={openModal}
           iconLeft={
             <Image
               loader={myLoader}
-              src={icon_create_folder}
+              src={icon_update_folder}
               alt={`icon`}
               width={20}
               height={20}
@@ -188,14 +211,14 @@ export default function CreateNoteFolder({ db_json, parent_name = "" }) {
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900 flex items-center justify-between"
                   >
-                    {!parent_name && <h3>Create folder.</h3>}
-                    {parent_name && (
+                    {!nameOfFolder && <h3>Update folder.</h3>}
+                    {nameOfFolder && (
                       <div>
-                        Create subfolder in &#34;
+                        Update the &#34;
                         <span className="underline decoration-double">
-                          {parent_name}
+                          {nameOfFolder}
                         </span>
-                        &#34;.
+                        &#34; folder.
                       </div>
                     )}
                     <Button
@@ -220,7 +243,7 @@ export default function CreateNoteFolder({ db_json, parent_name = "" }) {
                     </label>
                     <input
                       name="folderName"
-                      placeholder=" name of the folder"
+                      placeholder={nameOfFolder}
                       type="text"
                       // onChange={handleChange}
                       // value={input.folderName}
@@ -344,7 +367,7 @@ export default function CreateNoteFolder({ db_json, parent_name = "" }) {
                     </label>
                     <textarea
                       name="description"
-                      placeholder=" describe what kind of notes the folder will hold"
+                      placeholder={description}
                       onChange={(e) => setDescription(e.target.value)}
                       value={description}
                       required
@@ -358,7 +381,7 @@ export default function CreateNoteFolder({ db_json, parent_name = "" }) {
                     </label>
                     <input
                       name="icon"
-                      placeholder=" url to icon image"
+                      placeholder={icon}
                       type="text"
                       onChange={(e) => setIcon(e.target.value)}
                       value={icon}
@@ -368,10 +391,10 @@ export default function CreateNoteFolder({ db_json, parent_name = "" }) {
                   </div>
                   <hr className="text-neutral-300" />
                   <Button
-                    title="create folder"
+                    title="update folder"
                     style={7}
-                    tip={"Create a new folder for notes."}
-                    callBack={() => createFolderDB(parent_name)}
+                    tip={"Update folder for notes."}
+                    callBack={() => createFolderDB(nameOfFolder)}
                     disable={
                       check_empty &&
                       check_dot &&

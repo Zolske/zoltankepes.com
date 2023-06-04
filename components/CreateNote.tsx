@@ -8,9 +8,15 @@ import { uploadBytes, ref as rt_ref } from "firebase/storage";
 import Image from "next/image";
 import icon_correct from "../assets/images/icons/check.png";
 import icon_wrong from "../assets/images/icons/cross.png";
+import list_sublist from "../assets/images/doc_images/markdown_guide/list_sublist.png";
+import unordered_list from "../assets/images/doc_images/markdown_guide/unordered_list.png";
+import task_list from "../assets/images/doc_images/markdown_guide/task_list.png";
+import code_highlight from "../assets/images/doc_images/markdown_guide/code_highlight.png";
+import no_code_highlight from "../assets/images/doc_images/markdown_guide/no_code_highlight.png";
 import { allNoteNames } from "../lib/helperFunctions";
 import toast, { Toaster } from "react-hot-toast";
 import icon_create_note from "../assets/images/icons/create_file.png";
+import { handleHeadingId } from "@/lib/helperFunctions";
 
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -28,13 +34,14 @@ export default function CreateNote({
   pathFileStorage,
   db_json,
   folderName,
+  userData,
 }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const [noteName, setNoteName] = useState("");
   const [description, setDescription] = useState("");
   const [hero, setHero] = useState("https://picsum.photos/200");
-  const [author, setAuthor] = useState("");
+  const [author, setAuthor] = useState(userData.name);
   const [markdownText, setMarkdownText] = useState("");
 
   let created;
@@ -65,16 +72,9 @@ export default function CreateNote({
     setNamesListNotes(allNoteNames(db_json).sort());
     // set noteName back to an empty sting when Modal opens
     setNoteName("");
-    // set the name of the author back to an empty string
-    setAuthor("");
-    // set description back to an empty sting when Modal opens
-    setDescription("");
-    // set markdown text back to an empty sting when Modal opens
-    setMarkdownText("");
     // set empty sting check back to false which can be true from the
     // previous value
     setCheck_empty(false);
-    // console.log(pathFileStorage);
   }
 
   function checkNoteName(name) {
@@ -100,6 +100,17 @@ export default function CreateNote({
     );
   }
 
+  function clearContent() {
+    // set noteName back to an empty sting when Modal opens
+    setNoteName("");
+    // set the name of the author back to an empty string
+    setAuthor("");
+    // set description back to an empty sting when Modal opens
+    setDescription("");
+    // set markdown text back to an empty sting when Modal opens
+    setMarkdownText("");
+  }
+
   function addMetaData() {
     const nowDate = new Date();
     let nowDateString = nowDate.toUTCString();
@@ -110,6 +121,13 @@ export default function CreateNote({
     }
     if (author) {
       metaText = metaText.concat(`author: ${author}\n`);
+    } else if (userData.name) {
+      metaText = metaText.concat(
+        `author: ${userData.name.replace("á", "a")}\n`
+      );
+    }
+    if (userData.image) {
+      metaText = metaText.concat(`author_image: ${userData.image}\n`);
     }
     if (description) {
       metaText = metaText.concat(`description: ${description}\n`);
@@ -128,7 +146,7 @@ export default function CreateNote({
     updated = nowDateString;
 
     if (markdownText) {
-      const spacesCount = markdownText.split(" ").length - 1;
+      const spacesCount = markdownText.split(" ").length - 1 + 1;
       metaText = metaText.concat(`words: ${spacesCount}\n`);
       words = spacesCount;
       let min = Math.trunc(spacesCount / 200);
@@ -145,11 +163,12 @@ export default function CreateNote({
   }
 
   function createMarkdownInCloud(markdownMeta) {
-    // Create a reference to the file to delete
-    const storageRef = rt_ref(
-      storage,
-      "notes_markdown/" + pathFileStorage + "/" + noteName + ".md"
-    );
+    // const storageRef = rt_ref(
+    //   storage,
+    //   "notes_markdown/" + pathFileStorage + "/" + noteName + ".md"
+    // );
+    // Create a reference to the file in the file storage
+    const storageRef = rt_ref(storage, "notes_markdown/" + noteName + ".md");
     // Create a blog object with the file content which you want to add to the file
     const blob = new Blob([markdownMeta], { type: "text/markdown" });
     // 'file' comes from the Blob or File API
@@ -169,7 +188,8 @@ export default function CreateNote({
     set(ref(db, `markdown_note_index/${path}/${noteName}`), {
       MetaData: {
         description: description,
-        author: author,
+        author: author ? author : userData.name,
+        author_image: userData.image ? userData.image : "",
         title: noteName,
         created: created,
         updated: updated,
@@ -201,7 +221,8 @@ export default function CreateNote({
     // calls all 3 main functions in the correct order when the "create note" button is clicked
     addMetaData()
       .then((markdownMeta) => createMarkdownInCloud(markdownMeta))
-      .then(() => createNoteDB(path));
+      .then(() => createNoteDB(path))
+      .then(() => clearContent());
   }
 
   return (
@@ -406,10 +427,11 @@ export default function CreateNote({
                       </label>
                       <input
                         name="author"
-                        placeholder=" name of the author"
+                        // placeholder=" name of the author"
+                        placeholder={userData.name}
                         type="text"
                         onChange={(e) => setAuthor(e.target.value)}
-                        value={author}
+                        value={author ? author : userData.name}
                         autoComplete="true"
                         className="border-2 rounded-sm border-neutral-100 shadow-inner z-placeholder mb-3 w-full"
                       />
@@ -443,6 +465,692 @@ export default function CreateNote({
                     </div>
                   </details>
                   <hr className="text-neutral-300" />
+                  {/* >>> markdown guide */}
+                  <details open>
+                    <summary>Markdown Guide</summary>
+                    <div className="ml-4 mb-2">
+                      {/* Headings IDs and links */}
+                      <details>
+                        <summary className="italic font-light hover:bg-primary-100 w-fit pr-2">
+                          Headings & Heading Links
+                        </summary>
+                        <div className="ml-4 mb-4 pt-2 border-t-[1px] border-neutral-300">
+                          <table className="markdown-view">
+                            <thead>
+                              <tr>
+                                <th colSpan={2}>Headings</th>
+                              </tr>
+                              <tr>
+                                <th>gfm markdown</th>
+                                <th>rendered output</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <mark>#</mark> H1
+                                </td>
+                                <td>
+                                  <h1>H1</h1>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <mark>##</mark> H2
+                                </td>
+                                <td>
+                                  <h2>H2</h2>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <mark>###</mark> H3
+                                </td>
+                                <td>
+                                  <h3>H3</h3>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <mark>####</mark> H4
+                                </td>
+                                <td>
+                                  <h4>H4</h4>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <mark>#####</mark> H5
+                                </td>
+                                <td>
+                                  <h5>H5</h5>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <mark>#######</mark> H6
+                                </td>
+                                <td>
+                                  <h6>H6</h6>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <br></br>
+                          <table className="markdown-view">
+                            <thead>
+                              <tr>
+                                <th colSpan={3}>Heading Links</th>
+                              </tr>
+                              <tr>
+                                <th>gfm markdown</th>
+                                <th>rendered output</th>
+                                <th>comment</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>
+                                  # A h1 heading<br></br>
+                                  [link to heading](#A-h1-heading)
+                                </td>
+                                <td>
+                                  <h1>A h1 heading</h1>
+                                  <a>link to heading</a>
+                                </td>
+                                <td>
+                                  - works with all headings (h1-h6)<br></br>- a
+                                  JavaScript function adds an id to all headings
+                                  <br></br>
+                                  - empty &quot; &quot; spaces are replaced with
+                                  &quot;-&quot;
+                                  <br />- e.g. the heading &quot;2 is more&quot;
+                                  can be linked through &quot;2-is-more&quot;
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </details>
+                      {/* Emphasis */}
+                      <details>
+                        <summary className="italic font-light hover:bg-primary-100 w-fit pr-2">
+                          Emphasis
+                        </summary>
+                        <div className="ml-4 mb-4 pt-2 border-t-[1px] border-neutral-300">
+                          <table className="markdown-view">
+                            <thead>
+                              <tr>
+                                <th colSpan={2}>Emphasis</th>
+                              </tr>
+                              <tr>
+                                <th>gfm markdown</th>
+                                <th>rendered output</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>
+                                  Emphasis, aka italics, with <mark>*</mark>
+                                  asterisks<mark>*</mark> or <mark>_</mark>
+                                  underscores<mark>_</mark>.
+                                </td>
+                                <td>
+                                  Emphasis, aka italics, with <em>asterisks</em>{" "}
+                                  or&nbsp;
+                                  <em>underscores</em>.
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  Strong emphasis, aka bold, with{" "}
+                                  <mark>**</mark>
+                                  asterisks<mark>**</mark> or&nbsp;
+                                  <mark>__</mark>underscores<mark>__</mark>.
+                                </td>
+                                <td>
+                                  Strong emphasis, aka bold, with{" "}
+                                  <b>asterisks</b> or <b>underscores</b>.
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  Combined emphasis with <mark>**</mark>
+                                  asterisks and <mark>_</mark>underscores
+                                  <mark>_</mark>
+                                  <mark>**</mark>.
+                                </td>
+                                <td>
+                                  Combined emphasis with <b>asterisks and</b>
+                                  &nbsp;
+                                  <em>underscores</em>.
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  Strikethrough uses two tildes. <mark>~~</mark>
+                                  Scratch this.<mark>~~</mark>
+                                </td>
+                                <td>
+                                  Strikethrough uses two tildes.{" "}
+                                  <s>Scratch this.</s>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </details>
+                      {/* Lists */}
+                      <details>
+                        <summary className="italic font-light hover:bg-primary-100 w-fit pr-2">
+                          Lists
+                        </summary>
+                        <div className="ml-4 mb-4 pt-2 border-t-[1px] border-neutral-300">
+                          <em>
+                            * <mark>&#9645;</mark> stands for an{" "}
+                            <b>empty space</b>
+                          </em>
+                          <table className="markdown-view">
+                            <thead>
+                              <tr>
+                                <th colSpan={3}>Lists</th>
+                              </tr>
+                              <tr>
+                                <th>gfm markdown</th>
+                                <th>rendered output</th>
+                                <th>comment</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>
+                                  1.<mark>&#9645;</mark>First ordered list item
+                                  <br></br>2.
+                                  <mark>&#9645;</mark>Another item
+                                  <br></br>
+                                  <mark>&#9645;&#9645;&#9645;</mark>1.
+                                  <mark>&#9645;</mark>sublist item
+                                  <mark>&#9645;&#9645;</mark>
+                                  <br></br>
+                                  under sublist
+                                  <br></br>
+                                  <mark>&#9645;&#9645;&#9645;</mark>3.
+                                  <mark>&#9645;</mark>sublist item
+                                  <br></br>
+                                  <mark>
+                                    &#9645;&#9645;&#9645;&#9645;&#9645;&#9645;
+                                  </mark>
+                                  1.<mark>&#9645;</mark>sublist item
+                                  <mark>&#9645;&#9645;</mark>
+                                  <br></br>
+                                  under subsublist
+                                  <br></br>
+                                  4.<mark>&#9645;</mark>Third item
+                                </td>
+                                <td>
+                                  {" "}
+                                  <Image
+                                    loader={myLoader}
+                                    src={list_sublist}
+                                    alt={`rendered list`}
+                                    className="inline-block"
+                                  />
+                                </td>
+                                <td rowSpan={2}>
+                                  - leave <b>3 spaces at the beginning</b>
+                                  <br></br>of a new list item for every
+                                  indentation block<br></br>
+                                  <br></br>- every ordered sublist has to start
+                                  with <b>1.</b>
+                                  <br></br>
+                                  <br></br>- the following number&apos;s can be
+                                  any number<br></br>and will be rendered as{" "}
+                                  <b>B, C, ... .</b> <br></br>
+                                  <br></br>- leave <b>2 trailing spaces</b>{" "}
+                                  after the list item,
+                                  <br></br>if you want to continue under the
+                                  previous point
+                                  <br></br> (
+                                  <i>no number or ordered list items</i>)
+                                  <br></br>
+                                  <br></br>- for unordered list&apos;s use:{" "}
+                                  <b>- + *</b> <br></br>
+                                  <br></br>- unordered and ordered lists can be
+                                  mixed
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  -<mark>&#9645;</mark>First unordered list item
+                                  <br></br>-<mark>&#9645;</mark>Second unordered
+                                  list item
+                                  <br></br>
+                                  <mark>&#9645;&#9645;&#9645;</mark>-
+                                  <mark>&#9645;</mark>Unordered sub-list.
+                                  <mark>&#9645;&#9645;</mark>
+                                  <br></br>
+                                  something under
+                                  <br></br>
+                                  <mark>
+                                    &#9645;&#9645;&#9645;&#9645;&#9645;&#9645;
+                                  </mark>
+                                  -<mark>&#9645;</mark>Unordered subsub-list.
+                                  <br></br>
+                                  <mark>
+                                    &#9645;&#9645;&#9645;&#9645;&#9645;&#9645;&#9645;&#9645;&#9645;
+                                  </mark>
+                                  -<mark>&#9645;</mark>Unordered subsubsub-list.
+                                  <mark>&#9645;&#9645;</mark>
+                                  <br></br>
+                                  something under
+                                  <br></br>
+                                  <mark>
+                                    &#9645;&#9645;&#9645;&#9645;&#9645;&#9645;
+                                  </mark>
+                                  +<mark>&#9645;</mark>plus
+                                  <br></br>
+                                  <mark>&#9645;&#9645;&#9645;</mark>*
+                                  <mark>&#9645;</mark>star
+                                </td>
+                                <td>
+                                  <Image
+                                    loader={myLoader}
+                                    src={unordered_list}
+                                    alt={`unordered rendered list`}
+                                    className="inline-block"
+                                  />
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  *<mark>&#9645;</mark>[x]<mark>&#9645;</mark>
+                                  Completed task<br></br>*<mark>&#9645;</mark>[
+                                  ]<mark>&#9645;</mark>Unfinished task<br></br>
+                                  <mark>&#9645;&#9645;</mark>*
+                                  <mark>&#9645;</mark>[x]<mark>&#9645;</mark>
+                                  Nested task<br></br>
+                                </td>
+                                <td>
+                                  <Image
+                                    loader={myLoader}
+                                    src={task_list}
+                                    alt={`unordered rendered list`}
+                                    className="inline-block"
+                                  />
+                                </td>
+                                <td>
+                                  - is only rendered correctly in gfm markdown
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </details>
+                      {/* New Line */}
+                      <details>
+                        <summary className="italic font-light hover:bg-primary-100 w-fit pr-2">
+                          New Line
+                        </summary>
+                        <div className="ml-4 mb-4 pt-2 border-t-[1px] border-neutral-300">
+                          <em>
+                            * <mark>&#9166;</mark> stands for <b>ENTER</b>
+                            <br></br>* <mark>&#9645;</mark> stands for an{" "}
+                            <b>empty space</b>
+                          </em>
+                          <table className="markdown-view">
+                            <thead>
+                              <tr>
+                                <th colSpan={3}>New Line</th>
+                              </tr>
+                              <tr>
+                                <th>gfm markdown</th>
+                                <th>rendered output</th>
+                                <th>comment</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>
+                                  1 something <mark>&#9166;</mark>
+                                  <br></br>2 something
+                                </td>
+                                <td>1 something&nbsp;2 something</td>
+                                <td>
+                                  separating words with <b>ENTER</b> will NOT
+                                  create a new line
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  1 something <mark>&#9645;&#9645;&#9166;</mark>
+                                  <br></br>2 something
+                                </td>
+                                <td>
+                                  1 something<br></br>2 something
+                                </td>
+                                <td>
+                                  separating words with <b>two spaces</b> and{" "}
+                                  <b>ENTER</b> will create a new line
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  1 something <mark>&#9645;&#9645;&#9166;</mark>
+                                  <br></br>
+                                  <mark>&#9166;</mark>
+                                  <br></br>2 something
+                                </td>
+                                <td>
+                                  1 something<br></br>
+                                  <br></br>2 something
+                                </td>
+                                <td>
+                                  separating words with <b>two spaces</b> and{" "}
+                                  <b>two ENTER</b>&apos;s<br></br>will create a
+                                  new line with one empty line in between
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </details>
+                      {/* Code and Syntax Highlighting */}
+                      <details>
+                        <summary className="italic font-light hover:bg-primary-100 w-fit pr-2">
+                          Code and Syntax Highlighting
+                        </summary>
+                        <div className="ml-4 mb-4 pt-2 border-t-[1px] border-neutral-300">
+                          <em>
+                            * <mark>`</mark> stands for an <b>back-tick</b>
+                          </em>
+                          <table className="markdown-view">
+                            <thead>
+                              <tr>
+                                <th colSpan={2}>
+                                  Code and Syntax Highlighting
+                                </th>
+                              </tr>
+                              <tr>
+                                <th>gfm markdown</th>
+                                <th>rendered output</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>
+                                  Inline <mark>`</mark>code<mark>`</mark> has
+                                  back-ticks around it.
+                                </td>
+                                <td>
+                                  Inline <code>code</code> has back-ticks around
+                                  it.
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <mark>```</mark>
+                                  <br></br>
+                                  No language indicated, so no syntax
+                                  highlighting.<br></br>s = &quot;There is no
+                                  highlighting for this.&quot;<br></br>
+                                  <mark>```</mark>
+                                </td>
+                                <td>
+                                  <Image
+                                    loader={myLoader}
+                                    src={no_code_highlight}
+                                    alt={`rendered list`}
+                                    className="inline-block"
+                                  />
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <mark>```</mark>javascript<br></br>
+                                  var s = &quot;JavaScript syntax
+                                  highlighting&quot;;<br></br>
+                                  alert(s);<br></br>
+                                  <mark>```</mark>
+                                  <br></br>
+                                  <br></br>
+                                  <mark>```</mark>python<br></br>
+                                  def function():<br></br>
+                                  &nbsp;&nbsp;&nbsp;&nbsp;#indenting works just
+                                  fine in the fenced code block<br></br>
+                                  &nbsp;&nbsp;&nbsp;&nbsp;s = &quot;Python
+                                  syntax highlighting&quot;<br></br>
+                                  &nbsp;&nbsp;&nbsp;&nbsp;print s<br></br>
+                                  <mark>```</mark>
+                                  <br></br>
+                                  <br></br>
+                                  <mark>```</mark>ruby<br></br>
+                                  require &apos;redcarpet&apos;<br></br>
+                                  markdown = Redcarpet.new(&quot;Hello
+                                  World!&quot;)<br></br>
+                                  puts markdown.to_html<br></br>
+                                  <mark>```</mark>
+                                </td>
+                                <Image
+                                  loader={myLoader}
+                                  src={code_highlight}
+                                  alt={`rendered list`}
+                                  className="inline-block"
+                                />
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </details>
+                      {/* Emphasis */}
+                      <details>
+                        <summary className="italic font-light hover:bg-primary-100 w-fit pr-2">
+                          Emphasis
+                        </summary>
+                        <div className="ml-4 mb-4 pt-2 border-t-[1px] border-neutral-300">
+                          <table className="markdown-view">
+                            <thead>
+                              <tr>
+                                <th colSpan={2}>Emphasis</th>
+                              </tr>
+                              <tr>
+                                <th>gfm markdown</th>
+                                <th>rendered output</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <mark>#</mark> H1
+                                </td>
+                                <td>
+                                  <h1>H1</h1>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <mark>##</mark> H2
+                                </td>
+                                <td>
+                                  <h2>H2</h2>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <mark>###</mark> H3
+                                </td>
+                                <td>
+                                  <h3>H3</h3>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <mark>####</mark> H4
+                                </td>
+                                <td>
+                                  <h4>H4</h4>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <mark>#####</mark> H5
+                                </td>
+                                <td>
+                                  <h5>H5</h5>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <mark>#######</mark> H6
+                                </td>
+                                <td>
+                                  <h6>H6</h6>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </details>
+                      {/* Emphasis */}
+                      <details>
+                        <summary className="italic font-light hover:bg-primary-100 w-fit pr-2">
+                          Emphasis
+                        </summary>
+                        <div className="ml-4 mb-4 pt-2 border-t-[1px] border-neutral-300">
+                          <table className="markdown-view">
+                            <thead>
+                              <tr>
+                                <th colSpan={2}>Emphasis</th>
+                              </tr>
+                              <tr>
+                                <th>gfm markdown</th>
+                                <th>rendered output</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <mark>#</mark> H1
+                                </td>
+                                <td>
+                                  <h1>H1</h1>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <mark>##</mark> H2
+                                </td>
+                                <td>
+                                  <h2>H2</h2>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <mark>###</mark> H3
+                                </td>
+                                <td>
+                                  <h3>H3</h3>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <mark>####</mark> H4
+                                </td>
+                                <td>
+                                  <h4>H4</h4>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <mark>#####</mark> H5
+                                </td>
+                                <td>
+                                  <h5>H5</h5>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <mark>#######</mark> H6
+                                </td>
+                                <td>
+                                  <h6>H6</h6>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </details>
+                      {/* Emphasis */}
+                      <details>
+                        <summary className="italic font-light hover:bg-primary-100 w-fit pr-2">
+                          Emphasis
+                        </summary>
+                        <div className="ml-4 mb-4 pt-2 border-t-[1px] border-neutral-300">
+                          <table className="markdown-view">
+                            <thead>
+                              <tr>
+                                <th colSpan={2}>Emphasis</th>
+                              </tr>
+                              <tr>
+                                <th>gfm markdown</th>
+                                <th>rendered output</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <mark>#</mark> H1
+                                </td>
+                                <td>
+                                  <h1>H1</h1>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <mark>##</mark> H2
+                                </td>
+                                <td>
+                                  <h2>H2</h2>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <mark>###</mark> H3
+                                </td>
+                                <td>
+                                  <h3>H3</h3>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <mark>####</mark> H4
+                                </td>
+                                <td>
+                                  <h4>H4</h4>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <mark>#####</mark> H5
+                                </td>
+                                <td>
+                                  <h5>H5</h5>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <mark>#######</mark> H6
+                                </td>
+                                <td>
+                                  <h6>H6</h6>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </details>
+                    </div>
+                  </details>
+                  <hr className="text-neutral-300" />
                   {/* >>> markdown note text */}
                   <details open>
                     <summary>Markdown</summary>
@@ -465,12 +1173,15 @@ export default function CreateNote({
                       </div>
                       <div>
                         <h3 className="label-text">Markdown Preview:</h3>
-                        <div className="markdown-container">
+                        <div
+                          className="markdown-container"
+                          onClick={() => handleHeadingId()}
+                        >
                           <ReactMarkdown
                             // eslint-disable-next-line react/no-children-prop
                             children={markdownText}
                             remarkPlugins={[remarkGfm]}
-                            className="markdown-view"
+                            className="markdown-view js-md"
                             components={{
                               code({
                                 node,

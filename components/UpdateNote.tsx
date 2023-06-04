@@ -18,6 +18,7 @@ import icon_wrong from "../assets/images/icons/cross.png";
 import { allNoteNames } from "../lib/helperFunctions";
 import toast, { Toaster } from "react-hot-toast";
 import icon_update_note from "../assets/images/icons/update_note.png";
+import { handleHeadingId } from "@/lib/helperFunctions";
 
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -90,10 +91,7 @@ export default function UpdateNote({
   }
 
   useEffect(() => {
-    const fs_path = fs_ref(
-      storage,
-      `notes_markdown/${pathFileStorage}/${noteName}.md`
-    );
+    const fs_path = fs_ref(storage, `notes_markdown/${noteName}.md`);
     getDownloadURL(fs_path)
       .then((url) => {
         fetch(url).then((res) => {
@@ -175,10 +173,7 @@ export default function UpdateNote({
 
   function createMarkdownInCloud(markdownMeta) {
     // Create a reference to the file to delete
-    const storageRef = fs_ref(
-      storage,
-      `notes_markdown/${pathFileStorage}/${noteName}.md`
-    );
+    const storageRef = fs_ref(storage, `notes_markdown/${noteName}.md`);
     // Create a blog object with the file content which you want to add to the file
     const blob = new Blob([markdownMeta], { type: "text/markdown" });
     // 'file' comes from the Blob or File API
@@ -356,7 +351,10 @@ export default function UpdateNote({
                         <textarea
                           name="markdown"
                           placeholder=" write markdown"
-                          onChange={(e) => setMarkdownText(e.target.value)}
+                          onChange={(e) => {
+                            setMarkdownText(e.target.value);
+                            handleHeadingId();
+                          }}
                           value={markdownText}
                           required
                           autoComplete="true"
@@ -367,12 +365,15 @@ export default function UpdateNote({
                       </div>
                       <div>
                         <h3 className="label-text">Markdown Preview:</h3>
-                        <div className="markdown-container">
+                        <div
+                          className="markdown-container"
+                          onClick={() => handleHeadingId()}
+                        >
                           <ReactMarkdown
                             // eslint-disable-next-line react/no-children-prop
                             children={markdownText}
                             remarkPlugins={[remarkGfm]}
-                            className="markdown-view"
+                            className="markdown-view js-md"
                             components={{
                               code({
                                 node,

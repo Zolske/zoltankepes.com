@@ -37,7 +37,9 @@ export default function Home() {
           </span>
         </p>
         {LoggedUserData?.adminMarkdownNote && (
-          <p>is admin : {typeof LoggedUserData.adminMarkdownNote}</p>
+          <>
+            <p>is admin : {typeof LoggedUserData.adminMarkdownNote}</p>
+          </>
         )}
       </main>
     </>
