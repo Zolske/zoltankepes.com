@@ -19,6 +19,7 @@ import { allNoteNames } from "../lib/helperFunctions";
 import toast, { Toaster } from "react-hot-toast";
 import icon_update_note from "../assets/images/icons/update_note.png";
 import { handleHeadingId } from "@/lib/helperFunctions";
+import MarkdownGuide from "./MarkdownGuide";
 
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -339,6 +340,9 @@ export default function UpdateNote({
                       />
                     </div>
                   </details>
+                  <hr className="text-neutral-300" />
+                  {/* guide how to use markdown */}
+                  <MarkdownGuide />
                   <hr className="text-neutral-300" />
                   {/* >>> markdown note text */}
                   <details open>

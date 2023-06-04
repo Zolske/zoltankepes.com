@@ -40,7 +40,7 @@
   }
 
   .markdown-view blockquote {
-    @apply leading-6 font-font-sans text-neutral-700 border-l-4 border-neutral-300 pl-2 bg-indigo-100 inline-block pr-2;
+    @apply leading-6 font-font-sans text-neutral-700 border-l-4 border-neutral-300 pl-2 bg-indigo-100 inline-block pr-2 mb-1;
   }
 
   .markdown-view code {
@@ -82,7 +82,7 @@
     @apply leading-5 font-font-sans mt-6 text-sm font-medium underline decoration-neutral-300 decoration-1 underline-offset-4 text-neutral-900;
   }
   .markdown-view p {
-    @apply leading-6 font-font-sans text-neutral-700;
+    @apply leading-6 font-font-sans text-neutral-700 mb-1;
   }
   /* leave a blank line between two <p> tags */
   .markdown-view p ~ p {
@@ -113,7 +113,7 @@ h1 {
   @apply sm:text-2xl lg:text-4xl font-audiowide sm:tracking-widest;
 }
 
-details {
+summary {
   @apply cursor-pointer;
 }
 
