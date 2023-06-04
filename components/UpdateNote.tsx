@@ -126,7 +126,7 @@ export default function UpdateNote({
       .catch((error) => {
         console.log(`not such file in file storage: ${error}`);
       });
-  }, [isOpen]);
+  }, [isOpen, noteName]);
 
   function addMetaData() {
     const nowDate = new Date();
