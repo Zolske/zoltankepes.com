@@ -102,6 +102,9 @@
   .markdown-view tbody > tr {
     @apply odd:bg-indigo-100;
   }
+  .markdown-view tbody > tr {
+    @apply even:bg-[#fff];
+  }
   /* image */
   .markdown-view img {
     @apply shadow-md m-1 mb-2;

@@ -61,7 +61,7 @@ export default function UpdateNote({
 
   function closeModal() {
     setIsOpen(false);
-    setMarkdownText("");
+    //setMarkdownText("");
     setMetaTitle("");
     setMetaAuthor("");
     setMetaDescription("");
@@ -254,7 +254,8 @@ export default function UpdateNote({
         <Dialog
           as="div"
           className="relative z-10 flex justify-center"
-          onClose={closeModal}
+          // does not close the window when outside clicked or on ESC
+          onClose={() => {}}
         >
           <Transition.Child
             as={Fragment}
