@@ -359,6 +359,7 @@ export default function SubNote() {
                     language={match[1]}
                     PreTag="div"
                     showLineNumbers
+                    lineNumberContainerStyle
                   />
                 ) : (
                   <code {...props} className={className}>

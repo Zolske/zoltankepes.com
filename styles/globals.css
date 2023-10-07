@@ -128,4 +128,14 @@ summary {
 .rainbow-head-2 {
   @apply bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-primary-700;
 }
+
+/* add style to code block */
+.linenumber {
+  @apply box-content border-r-[1px] border-[#000] pr-[5px] mr-2 !important;
+}
+
+/* fix intenation with first line of code in code block */
+.linenumber:first-child {
+  @apply ml-[-4px];
+}
 /*<<< end <<<  tailwind */
