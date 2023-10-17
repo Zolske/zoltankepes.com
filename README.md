@@ -6,4 +6,3 @@ The purpose of my website is to showcase my work and gather feedback. The site c
 You can get to my website over this link -> [zoltankepes.com](https://www.zoltankepes.com/)
 
 ---
-check if I can commit from Laptop
